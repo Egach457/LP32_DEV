@@ -2,7 +2,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
 
-engine = create_engine("postgresql://wkxgrsna:Pdwbcq78MxRZPpURw1Nnh-yLYl5hQySu@cornelius.db.elephantsql.com/wkxgrsna")
+import config
+
+engine = create_engine(config.URL_API_KEY)
 db_session = scoped_session(sessionmaker(bind=engine))
 
 Base = declarative_base()
