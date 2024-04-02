@@ -6,17 +6,6 @@ from sqlalchemy.orm import relationship, Mapped, mapped_column
 from db import Base, engine
 
 
-class ApartmensTypeChoice(Enum):
-    apartment = "Квартира"
-    house = "Дом"
-    room = "Комната"
-    hotel = "Отель"
-
-
-class PaymensTypeChoice(Enum):
-    cash = "Наличные"
-    card = "Карта"
-
 association_table = Table(
     "association_table",
     Base.metadata,
@@ -29,6 +18,19 @@ association_table = Table(
     Column("users_id", ForeignKey("users.id"), primary_key=True),
 
 )
+
+
+class ApartmensTypeChoice(Enum):
+    apartment = "Квартира"
+    house = "Дом"
+    room = "Комната"
+    hotel = "Отель"
+
+
+class PaymensTypeChoice(Enum):
+    cash = "Наличные"
+    card = "Карта"
+
 
 class Apartmens(Base):
     __tablename__ = "apartmens"
@@ -65,9 +67,9 @@ class Apartmens(Base):
     properties_bunch: Mapped[list["Propertie"]] = relationship(
         secondary=association_table, back_populates="apartmens_bunch"
     )
-    # comments_bunch: Mapped[list["Comment"]] = relationship(
-        # secondary=association_table, back_populates="apartmens_bunch"
-    # )
+    comments_bunch: Mapped[list["Comment"]] = relationship(
+        secondary=association_table, back_populates="apartmens_bunch"
+    )
 
     def __repr__(self) -> str:
         return f"Apartmens id: {self.id}, title: {self.address}"
@@ -87,7 +89,6 @@ class User(Base):
     apartmens: Mapped[list["Apartmens"]] = relationship()
     comment_bunch: Mapped[list["Comment"]] = relationship(
         back_populates="user_bunch")
-
 
     def __repr__(self) -> str:
         return f"User id: {self.id}, {self.first_name}"
@@ -176,9 +177,9 @@ class Comment(Base):
         "users.id", ondelete="CASCADE"), index=True, nullable=False)
     date_create: Mapped[DateTime] = mapped_column(DateTime)
     description: Mapped[Optional[Text]] = mapped_column(Text)
-    # apartmens: Mapped[list["Apartmens"]] = relationship(
-        # secondary=association_table,
-        # back_populates="comment_bunch")
+    apartmens: Mapped[list["Apartmens"]] = relationship(
+        secondary=association_table,
+        back_populates="comment_bunch")
     user_bunch: Mapped[list["User"]] = relationship(
         back_populates="comment_bunch")
 
