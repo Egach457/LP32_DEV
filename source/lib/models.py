@@ -1,21 +1,10 @@
 from typing import Optional
 from enum import Enum
-from sqlalchemy import Column, Integer, String, DateTime, Text, ForeignKey, Table
+from sqlalchemy import Column, BigInteger, Integer, String, DateTime, Text, ForeignKey, Table
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from db import Base, engine
 
-
-class ApartmensTypeChoice(Enum):
-    apartment = "Квартира"
-    house = "Дом"
-    room = "Комната"
-    hotel = "Отель"
-
-
-class PaymensTypeChoice(Enum):
-    cash = "Наличные"
-    card = "Карта"
 
 association_table = Table(
     "association_table",
@@ -29,6 +18,19 @@ association_table = Table(
     Column("users_id", ForeignKey("users.id"), primary_key=True),
 
 )
+
+
+class ApartmensTypeChoice(Enum):
+    apartment = "Квартира"
+    house = "Дом"
+    room = "Комната"
+    hotel = "Отель"
+
+
+class PaymensTypeChoice(Enum):
+    cash = "Наличные"
+    card = "Карта"
+
 
 class Apartmens(Base):
     __tablename__ = "apartmens"
@@ -46,10 +48,10 @@ class Apartmens(Base):
         "comments.id", ondelete="CASCADE"), index=True, nullable=False)
     user_id: Mapped[int] = mapped_column(ForeignKey(
         "users.id", ondelete="CASCADE"), index=True, nullable=False)
-    country: Mapped[str] = mapped_column(nullable=False)
-    city: Mapped[str] = mapped_column(nullable=False)
-    address: Mapped[str] = mapped_column(nullable=False)
-    title: Mapped[str] = mapped_column(nullable=False)
+    country: Mapped[str] = mapped_column(String(64), nullable=False)
+    city: Mapped[str] = mapped_column(String(64), nullable=False)
+    address: Mapped[str] = mapped_column(String(164), nullable=False)
+    title: Mapped[str] = mapped_column(String(164), nullable=False)
     description: Mapped[Optional[Text]] = mapped_column(Text)
     rent_type: Mapped[ApartmensTypeChoice]
     payment_type: Mapped[PaymensTypeChoice]
@@ -77,17 +79,16 @@ class User(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    first_name: Mapped[str] = mapped_column(nullable=False)
-    last_name: Mapped[str] = mapped_column(nullable=False)
-    email: Mapped[str] = mapped_column(unique=True, nullable=False)
-    phone: Mapped[int] = mapped_column(nullable=False)
-    login: Mapped[str] = mapped_column(unique=True, nullable=False)
-    password: Mapped[str] = mapped_column(nullable=False) # Требуется создать для
+    first_name: Mapped[str] = mapped_column(String(64), nullable=False)
+    last_name: Mapped[str] = mapped_column(String(64), nullable=False)
+    email: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
+    phone: Mapped[str] = mapped_column(String(13), nullable=False)
+    login: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
+    password: Mapped[str] = mapped_column(String(64), nullable=False) # Требуется создать для
        # пользователя зашифрованный пароль.
     apartmens: Mapped[list["Apartmens"]] = relationship()
     comment_bunch: Mapped[list["Comment"]] = relationship(
         back_populates="user_bunch")
-
 
     def __repr__(self) -> str:
         return f"User id: {self.id}, {self.first_name}"
@@ -176,7 +177,9 @@ class Comment(Base):
         "users.id", ondelete="CASCADE"), index=True, nullable=False)
     date_create: Mapped[DateTime] = mapped_column(DateTime)
     description: Mapped[Optional[Text]] = mapped_column(Text)
-    apartmens: Mapped[list["Apartmens"]] = relationship()
+    apartmens: Mapped[list["Apartmens"]] = relationship(
+        secondary=association_table,
+        back_populates="comment_bunch")
     user_bunch: Mapped[list["User"]] = relationship(
         back_populates="comment_bunch")
 
