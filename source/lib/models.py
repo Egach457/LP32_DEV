@@ -1,9 +1,12 @@
 from typing import Optional
 from enum import Enum
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import Column, BigInteger, Integer, String, DateTime, Text, ForeignKey, Table
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
-from db import Base, engine
+from lib.db import Base, engine
+
 
 
 association_table = Table(
@@ -67,15 +70,15 @@ class Apartmens(Base):
     properties_bunch: Mapped[list["Propertie"]] = relationship(
         secondary=association_table, back_populates="apartmens_bunch"
     )
-    comments_bunch: Mapped[list["Comment"]] = relationship(
-        secondary=association_table, back_populates="apartmens_bunch"
-    )
+    # comments_bunch: Mapped[list["Comment"]] = relationship(
+        # secondary=association_table, back_populates="apartmens_bunch"
+    # )
 
     def __repr__(self) -> str:
         return f"Apartmens id: {self.id}, title: {self.address}"
 
 
-class User(Base):
+class User(Base, UserMixin):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -83,12 +86,21 @@ class User(Base):
     last_name: Mapped[str] = mapped_column(String(64), nullable=False)
     email: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
     phone: Mapped[str] = mapped_column(String(13), nullable=False)
-    login: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
-    password: Mapped[str] = mapped_column(String(64), nullable=False) # Требуется создать для
-       # пользователя зашифрованный пароль.
+    password: Mapped[str] = mapped_column(nullable=False)
+    role: Mapped[str] = mapped_column(String(10), index=True)
     apartmens: Mapped[list["Apartmens"]] = relationship()
-    comment_bunch: Mapped[list["Comment"]] = relationship(
-        back_populates="user_bunch")
+    # comment_bunch: Mapped[list["Comment"]] = relationship(
+        # back_populates="user_bunch")
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+
+    @property
+    def is_admin(self):
+        return self.role == "admin"
 
     def __repr__(self) -> str:
         return f"User id: {self.id}, {self.first_name}"
@@ -177,11 +189,11 @@ class Comment(Base):
         "users.id", ondelete="CASCADE"), index=True, nullable=False)
     date_create: Mapped[DateTime] = mapped_column(DateTime)
     description: Mapped[Optional[Text]] = mapped_column(Text)
-    apartmens: Mapped[list["Apartmens"]] = relationship(
-        secondary=association_table,
-        back_populates="comment_bunch")
-    user_bunch: Mapped[list["User"]] = relationship(
-        back_populates="comment_bunch")
+    # apartmens: Mapped[list["Apartmens"]] = relationship(
+        # secondary=association_table,
+        # back_populates="comment_bunch")
+    # user_bunch: Mapped[list["User"]] = relationship(
+        # back_populates="comment_bunch")
 
     def __repr__(self) -> str:
         return f"Comment id: {self.id}, {self.date_create}"
