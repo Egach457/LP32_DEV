@@ -2,8 +2,8 @@ from getpass import getpass
 import sys
 
 from webapp import create_app
-from lib.db import db
-from lib.models import User
+from webapp.lib.db import db
+from webapp.user.models import User
 
 app = create_app()
 
