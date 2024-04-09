@@ -6,7 +6,7 @@ from cards.views import blueprint as cards_blueprint
 
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder='static')
     #app.config.from_pyfile('config.py')
 
     app.register_blueprint(cards_blueprint)
