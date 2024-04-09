@@ -1,7 +1,6 @@
-import os
-
 from flask import Flask, flash, render_template, redirect, url_for
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
+from flask_migrate import Migrate
 
 
 from webapp.intro.views import blueprint as intro_blueprint
@@ -15,6 +14,7 @@ def create_app():
     app = Flask(__name__)
     app.config.from_pyfile(CONFIG_APP)
     db.init_app(app)
+    migrate = Migrate(app, db)
 
     login_manager = LoginManager()
     login_manager.init_app(app)
