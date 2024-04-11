@@ -4,6 +4,5 @@ blueprint = Blueprint("intro", __name__)
 
 @blueprint.route("/")
 def index():
-    title = "Первая страница"
-    return render_template("intro/index.html", page_title=title)
-
+    title = "Daily Rent"
+    return render_template("base_intro.html", page_title=title)

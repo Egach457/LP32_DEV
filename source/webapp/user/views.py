@@ -36,10 +36,10 @@ def process_login():
 def logout():
     logout_user()
     flash("Вы успешно разлогинились")
-    return redirect(url_for('intro.index'))
+    return redirect(url_for("intro.index"))
 
 @blueprint.route("/register")
-def registet():
+def register():
     if current_user.is_authenticated:
         return redirect(url_for("intro.index"))
     title = "Registration"
@@ -50,16 +50,23 @@ def registet():
 def process_reg():
     form = RegistrationForm()
     if form.validate_on_submit():
-        new_user = User(first_name=form.first_name.data,
-                        last_name=form.last_name.data,
-                        phone=form.phone.data,
-                        email=form.email.data,
-                        role="user"
-                        )
+        new_user = User(
+            first_name=form.first_name.data,
+            last_name=form.last_name.data,
+            phone=form.phone.data,
+            email=form.email.data,
+            role="user"
+        )
         new_user.set_password(form.password.data)
         db.session.add(new_user)
         db.session.commit()
         flash("Вы успешно зарегистрировались")
         return redirect(url_for("user.login"))
-    flash("Исправьте ошибки в форме")
-    return redirect(url_for("user.register"))
+    else:
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash("Ошибка в поле {}: {}".format(
+                    getattr(form, field).label.text,
+                    error
+                ))
+        return redirect(url_for("user.register"))

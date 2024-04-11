@@ -6,6 +6,7 @@ from flask_migrate import Migrate
 from webapp.intro.views import blueprint as intro_blueprint
 from webapp.admin.views import blueprint as admin_blueprint
 from webapp.user.views import blueprint as user_blueprint
+from webapp.booking.views import blueprint as booking_blueprint
 from webapp.user.models import User
 from webapp.lib.db import db
 from webapp.lib.config import CONFIG_APP
@@ -23,6 +24,8 @@ def create_app():
     app.register_blueprint(user_blueprint)
     app.register_blueprint(admin_blueprint)
     app.register_blueprint(intro_blueprint)
+    app.register_blueprint(booking_blueprint)
+
 
     @login_manager.user_loader
     def load_user(user_id):

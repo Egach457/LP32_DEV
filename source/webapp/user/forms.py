@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, PasswordField, StringField, SubmitField
-from wtforms.validators import DataRequired, Email, EqualTo
+from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 
+from webapp.user.models import User
 
 class LoginForm(FlaskForm):
     email = StringField("Email address", validators=[DataRequired()],
@@ -15,7 +16,7 @@ class LoginForm(FlaskForm):
 
 class RegistrationForm(FlaskForm):
     first_name = StringField("First name", validators=[DataRequired()],
-                        render_kw={"class": "form-control"}) 
+                        render_kw={"class": "form-control"})
     last_name = StringField("Last name", validators=[DataRequired()],
                         render_kw={"class": "form-control"})
     phone = StringField("Phone number", validators=[DataRequired()],
@@ -24,7 +25,20 @@ class RegistrationForm(FlaskForm):
                         render_kw={"class": "form-control"})
     password = PasswordField("Password", validators=[DataRequired()],
                              render_kw={"class": "form-control"})
-    password2 = PasswordField("Repeat password", validators=[DataRequired(), EqualTo("password")],
-                             render_kw={"class": "form-control"})
+    password2 = PasswordField("Repeat password",
+                              validators=[DataRequired(), EqualTo("password")],
+                              render_kw={"class": "form-control"})
     submit = SubmitField("Sign in", render_kw={"class": "btn btn-primary"})
 
+
+    def validate_useraname(self, first_name, last_name):
+        user_count = User.query.filter_by(first_name=first_name.data,
+                                          last_name=last_name.data).count()
+        if user_count > 0:
+            raise ValidationError("Такой пользователь зарегистрирован")
+
+
+    def validate_email(self, email):
+        user_count = User.query.filter_by(email=email.data).count()
+        if user_count > 0:
+            raise ValidationError("Пользовател с такой электронной почтой уже зарегистрирован")

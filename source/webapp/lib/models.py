@@ -1,8 +1,7 @@
 from typing import Optional
 from enum import Enum
-from flask_login import UserMixin
-from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy import Column, BigInteger, Integer, String, DateTime, Text, ForeignKey, Table
+from sqlalchemy import Column, Integer, String, DateTime, Text, ForeignKey, Table
+from sqlalchemy.dialects.postgresql import ENUM as PgEnum
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from webapp.lib.db import Base, engine
@@ -25,15 +24,17 @@ association_table = Table(
 
 
 class ApartmensTypeChoice(Enum):
-    apartment = "Квартира"
-    house = "Дом"
-    room = "Комната"
-    hotel = "Отель"
+    DEFAULT_VALUE = "Не определено"
+    APARTMENT = "Квартира"
+    HOUSE = "Дом"
+    ROOM = "Комната"
+    HOTEL = "Отель"
 
 
 class PaymensTypeChoice(Enum):
-    cash = "Наличные"
-    card = "Карта"
+    DEFAULT_VALUE = "Не определено"
+    CASH = "Наличные"
+    CARD = "Карта"
 
 
 class Apartmens(Base):
@@ -56,21 +57,27 @@ class Apartmens(Base):
     city: Mapped[str] = mapped_column(String(64), nullable=False)
     address: Mapped[str] = mapped_column(String(164), nullable=False)
     title: Mapped[str] = mapped_column(String(164), nullable=False)
-    description: Mapped[Optional[Text]] = mapped_column(Text)
-    rent_type: Mapped[ApartmensTypeChoice]
-    payment_type: Mapped[PaymensTypeChoice]
-    accommodations_bunch: Mapped[list["Accommodation"]] = relationship(
-        secondary=association_table, back_populates="apartmens_bunch"
+    description: Mapped[Optional[Text]] = mapped_column(Text, nullable=True)
+    rent_type: Mapped[ApartmensTypeChoice] = mapped_column(
+        PgEnum(ApartmensTypeChoice, name="rent_type", create_type=False),
+        nullable=False, default=ApartmensTypeChoice.DEFAULT_VALUE,
     )
-    comforts_bunch: Mapped[list["Comfort"]] = relationship(
-        secondary=association_table, back_populates="apartmens_bunch"
+    payment_type: Mapped[PaymensTypeChoice] = mapped_column(
+        PgEnum(PaymensTypeChoice, name="payment_type", create_type=False),
+        nullable=False, default=PaymensTypeChoice.DEFAULT_VALUE,
     )
-    payments_bunch: Mapped[list["Payment"]] = relationship(
-        secondary=association_table, back_populates="apartmens_bunch"
-    )
-    properties_bunch: Mapped[list["Propertie"]] = relationship(
-        secondary=association_table, back_populates="apartmens_bunch"
-    )
+    # accommodations_bunch: Mapped[list["Accommodation"]] = relationship(
+        # secondary=association_table, back_populates="apartmens_bunch"
+    # )
+    # comforts_bunch: Mapped[list["Comfort"]] = relationship(
+        # secondary=association_table, back_populates="apartmens_bunch"
+    # )
+    # payments_bunch: Mapped[list["Payment"]] = relationship(
+        # secondary=association_table, back_populates="apartmens_bunch"
+    # )
+    # properties_bunch: Mapped[list["Propertie"]] = relationship(
+        # secondary=association_table, back_populates="apartmens_bunch"
+    # )
     # comments_bunch: Mapped[list["Comment"]] = relationship(
         # secondary=association_table, back_populates="apartmens_bunch"
     # )
@@ -95,8 +102,8 @@ class Comfort(Base):
     apartmens_id: Mapped[int] = mapped_column(ForeignKey(
         "apartmens.id", ondelete="CASCADE"), index=True, nullable=False)
     comfort_choice: Mapped[ComfortChoice]
-    apartmens_bunch: Mapped[list["Apartmens"]] = relationship(
-        secondary=association_table, back_populates="comforts_bunch")
+    # apartmens_bunch: Mapped[list["Apartmens"]] = relationship(
+        # secondary=association_table, back_populates="comforts_bunch")
 
     def __repr__(self) -> str:
         return f"Comfort id: {self.id}, {self.apartmens_id}"
@@ -116,8 +123,8 @@ class Propertie(Base):
     apartmens_id: Mapped[int] = mapped_column(ForeignKey(
         "apartmens.id", ondelete="CASCADE"), index=True, nullable=False)
     propertie_choice: Mapped[PropertieChoise]
-    apartmens_bunch: Mapped[list["Apartmens"]] = relationship(
-        secondary=association_table, back_populates="properties_bunch")
+    # apartmens_bunch: Mapped[list["Apartmens"]] = relationship(
+        # secondary=association_table, back_populates="properties_bunch")
 
     def __repr__(self) -> str:
         return f"Propertie id: {self.id}, {self.apartmens_id}"
@@ -130,8 +137,8 @@ class Payment(Base):
     apartmens_id: Mapped[int] = mapped_column(ForeignKey(
         "apartmens.id", ondelete="CASCADE"), index=True, nullable=False)
     price: Mapped[int] = mapped_column(nullable=False)
-    apartmens_bunch: Mapped[list["Apartmens"]] = relationship(
-        secondary=association_table, back_populates="payments_bunch")
+    # apartmens_bunch: Mapped[list["Apartmens"]] = relationship(
+        # secondary=association_table, back_populates="payments_bunch")
 
     def __repr__(self) -> str:
         return f"Payment id: {self.id}, {self.price}"
@@ -145,8 +152,8 @@ class Accommodation(Base):
         "apartmens.id", ondelete="CASCADE"), index=True, nullable=False)
     date_arrival: Mapped[DateTime] = mapped_column(DateTime)
     date_departure: Mapped[DateTime] = mapped_column(DateTime)
-    apartmens_bunch: Mapped[list["Apartmens"]] = relationship(
-        secondary=association_table, back_populates="accommodations_bunch")
+    # apartmens_bunch: Mapped[list["Apartmens"]] = relationship(
+        # secondary=association_table, back_populates="accommodations_bunch")
 
     def __repr__(self) -> str:
         return f"Accommodation id: {self.id}, {self.date_arrival}"
