@@ -43,79 +43,20 @@
 
 <div class="container mt-4">
   <div class="row">
+    {% for card in cards_list %}
     <div class="col-md-4 mx-2">
       <div class="card mt-4">
         <img src="/static/img/home1.jpg" class="card-img-top" alt="...">
         <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-          <p class="card-text">Тут про объект</p>
-          <a href="#" class="btn "><i class="fab fa-github"></i> Забронировать</a>
+          <h5 class="card-title">{{ card.title }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{ card.country }}, {{ card.city }}, {{ card.address }}</h6>
+          <p class="card-text">{{ card.description }}</p>
+          <input type="hidden" name="id" value="{{ card.id }}">
+          <a href="{{ url_for('booking', apartment_id=apartment.id) }}" class="btn " value="{{ card.id }}"><i class="fab fa-github"></i> Подробнее</a>
         </div>
       </div>
     </div>
-
-    <div class="col-md-4 mx-2">
-      <div class="card mt-4">
-        <img src="/static/img/home1.jpg" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-          <p class="card-text">Тут про объект</p>
-          <a href="#" class="btn"><i class="fab fa-github"></i> Забронировать</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-4 mx-2">
-      <div class="card mt-4">
-        <img src="/static/img/home1.jpg" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-          <p class="card-text">Тут про объект</p>
-          <a href="#" class="btn"><i class="fab fa-github"></i> Забронировать</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-4 mx-2">
-      <div class="card mt-4">
-        <img src="/static/img/home1.jpg" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-          <p class="card-text">Тут про объект</p>
-          <a href="#" class="btn"><i class="fab fa-github"></i> Забронировать</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-4 mx-2">
-      <div class="card mt-4">
-        <img src="/static/img/home1.jpg" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-          <p class="card-text">Тут про объект</p>
-          <a href="#" class="btn"><i class="fab fa-github"></i> Забронировать</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-4 mx-2">
-      <div class="card mt-4">
-        <img src="/static/img/home1.jpg" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-          <p class="card-text">Тут про объект</p>
-          <a href="#" class="btn"><i class="fab fa-github"></i> Забронировать</a>
-        </div>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 </div>
 
