@@ -1,11 +1,10 @@
-from typing import Optional
-from enum import Enum
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy import Column, BigInteger, Integer, String, DateTime, Text, ForeignKey, Table
+from sqlalchemy import String
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
-from webapp.lib.db import Base, engine
+from webapp.lib.db import Base
+
 
 class User(Base, UserMixin):
     __tablename__ = "users"
@@ -17,9 +16,14 @@ class User(Base, UserMixin):
     phone: Mapped[str] = mapped_column(String(13), nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
     role: Mapped[str] = mapped_column(String(10), index=True)
-    # apartmens: Mapped[list["Apartmens"]] = relationship()
-    # comment_bunch: Mapped[list["Comment"]] = relationship(
-        # back_populates="user_bunch")
+    apartmens_bunch: Mapped[list["Apartmens"]] = relationship(
+        back_populates="user_bunch",
+        uselist=True,
+    )
+    comment_bunch: Mapped[list["Comment"]] = relationship(
+        back_populates="user_bunch",
+        uselist=True,
+    )
 
     def set_password(self, password):
         self.password = generate_password_hash(password)

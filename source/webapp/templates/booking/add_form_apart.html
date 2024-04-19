@@ -17,21 +17,24 @@
     <div class="form-group">{{ form.title.label }} {{ form.title() }}</div>
     <div class="form-group">{{ form.description.label }} {{ form.description() }}</div>
     <div class="form-group">{{ form.rent_type.label }}</div>
-      <select class="form-select form-group" aria-label="Default select example">
+      <select class="form-select" name="rent_type" aria-label="Default select example">
         <option selected>Open this select menu</option>
-        <option value="1">Квартира</option>
-        <option value="2">Дом</option>
-        <option value="3">Комната</option>
-        <option value="4">Отель</option>
+        {% for value in rent_options %}
+        <option value="{{ value }}">{{ value }}</option>
+        {% endfor %}
       </select>
     <div class="form-group">{{ form.payment_type.label }}</div>
-      <select class="form-select" aria-label="Default select example">
+      <select class="form-select" name="payment_type" aria-label="Default select example">
         <option selected>Open this select menu</option>
-        <option value="1">Наличные</option>
-        <option value="2">Карта</option>
+        {% for value in payment_options %}
+        <option value="{{ value }}">{{ value }}</option>
+        {% endfor %}
       </select>
+    <div class="form-group">{{ form.floor.label }} {{ form.floor() }}</div>
+    <div class="form-group">{{ form.apartment_number.label }} {{ form.apartment_number() }}</div>
+    <div class="form-group">{{ form.number_of_beds.label }} {{ form.number_of_beds() }}</div>
+    <div class="form-group">{{ form.number_of_guests.label }} {{ form.number_of_guests() }}</div>
+    <div class="form-group">{{ form.footege_room.label }} {{ form.footege_room() }}</div>
     {{ form.submit }}
   </form>
 {% endblock %}
-{{ form.rent_type() }}
-{{ form.payment_type() }}

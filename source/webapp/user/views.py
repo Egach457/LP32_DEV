@@ -38,6 +38,7 @@ def logout():
     flash("Вы успешно разлогинились")
     return redirect(url_for("intro.index"))
 
+
 @blueprint.route("/register")
 def register():
     if current_user.is_authenticated:
@@ -45,6 +46,7 @@ def register():
     title = "Registration"
     form = RegistrationForm()
     return render_template("user/registration.html", page_title=title, form=form)
+
 
 @blueprint.route("/process-reg", methods=["POST"])
 def process_reg():
@@ -55,7 +57,7 @@ def process_reg():
             last_name=form.last_name.data,
             phone=form.phone.data,
             email=form.email.data,
-            role="user"
+            role="user",
         )
         new_user.set_password(form.password.data)
         db.session.add(new_user)
@@ -65,8 +67,9 @@ def process_reg():
     else:
         for field, errors in form.errors.items():
             for error in errors:
-                flash("Ошибка в поле {}: {}".format(
-                    getattr(form, field).label.text,
-                    error
-                ))
+                flash(
+                    "Ошибка в поле {}: {}".format(
+                        getattr(form, field).label.text, error
+                    )
+                )
         return redirect(url_for("user.register"))

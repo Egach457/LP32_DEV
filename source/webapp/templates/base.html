@@ -14,9 +14,11 @@
       href="{{ url_for('static', filename='css/styles.css') }}"
     />
   </head>
+
   <body>
     <div class="conteiner">
       <h2 class="text-center">{{ page_title }}</h2>
+
       {% block content %} {% endblock %}
     </div>
     <!--Bootstrap link js-->
