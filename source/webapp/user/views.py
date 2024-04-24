@@ -3,7 +3,7 @@ from flask_login import current_user, login_user, logout_user
 
 from webapp.lib.db import db
 from webapp.user.forms import LoginForm, RegistrationForm
-from webapp.user.models import User
+from webapp.lib.models import User
 
 blueprint = Blueprint("user", __name__, url_prefix="/users")
 
