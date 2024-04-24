@@ -1,24 +1,11 @@
 from typing import Optional
 from enum import Enum
-from sqlalchemy import Column, Integer, String, DateTime, Text, ForeignKey, Table
+from sqlalchemy import Boolean, Column, Integer, String, DateTime, Text, ForeignKey
 from sqlalchemy.dialects.postgresql import ENUM as PgEnum
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from webapp.lib.db import Base, engine
 from webapp.user.models import User
-
-
-# association_table = Table(
-# "association_table",
-# Base.metadata,
-# Column("apartmens_id", ForeignKey("apartmens.id"), primary_key=True),
-# Column("accommodations_id", ForeignKey("accommodations.id"), primary_key=True),
-# Column("comforts_id", ForeignKey("comforts.id"), primary_key=True),
-# Column("payments_id", ForeignKey("payments.id"), primary_key=True),
-# Column("properties_id", ForeignKey("properties.id"), primary_key=True),
-# Column("comments_id", ForeignKey("comments.id"), primary_key=True),
-# Column("users_id", ForeignKey("users.id"), primary_key=True),
-# )
 
 
 class ApartmensTypeChoice(Enum):
@@ -111,16 +98,7 @@ class Apartmens(Base):
         return f"Apartmens id: {self.id}, title: {self.address}"
 
 
-class ComfortChoice(Enum):
-    DEFAULT_VALUE = "Не определенно"
-    WI_FI = "Wi-Fi"
-    HAIR_DRYER = "Фен"
-    TOWELS = "Полотенец"
-    BALCONY = "Балкон"
-    AIR_CONDITIONER = "Кондиционер"
-    TV = "Телевизор"
-
-
+# TODO: изменить ComfortChoice и Propertie внести обычные поля и добавить в форму
 class Comfort(Base):
     __tablename__ = "comforts"
 
@@ -128,16 +106,12 @@ class Comfort(Base):
     apartmens_id: Mapped[int] = mapped_column(
         ForeignKey("apartmens.id", ondelete="CASCADE"), index=True, nullable=False
     )
-    comfort_choice: Mapped[ComfortChoice] = mapped_column(
-        PgEnum(
-            ComfortChoice,
-            name="comfortchoice",
-            create_type=False,
-            values_callable=lambda n: [item.value for item in n],
-        ),
-        nullable=False,
-        default=ComfortChoice.DEFAULT_VALUE,
-    )
+    wi_fi: Mapped[str] = mapped_column(Boolean, nullable=True, default=True)
+    hair_dryer: Mapped[str] = mapped_column(Boolean, nullable=True, default=True)
+    towels: Mapped[str] = mapped_column(Boolean, nullable=True, default=True)
+    balcony: Mapped[str] = mapped_column(Boolean, nullable=True, default=True)
+    air_conditioner: Mapped[str] = mapped_column(Boolean, nullable=True, default=True)
+    tv: Mapped[str] = mapped_column(Boolean, nullable=True, default=True)
     apartmens_bunch: Mapped["Apartmens"] = relationship(
         back_populates="comforts_bunch",
         uselist=False,
@@ -145,14 +119,6 @@ class Comfort(Base):
 
     def __repr__(self) -> str:
         return f"Comfort id: {self.id}, {self.apartmens_id}"
-
-
-class PropertieChoise(Enum):
-    DEFAULT_VALUE = "Не определенно"
-    NO_CHILDREN = "Без детей"
-    NO_PARTIES = "Без вечеринок"
-    NO_SMOKING = "Курение запрещено"
-    NO_PETS = "Без питомце"
 
 
 class Propertie(Base):
@@ -166,17 +132,11 @@ class Propertie(Base):
     apartment_number: Mapped[str] = mapped_column(String(10), nullable=False)
     number_of_beds: Mapped[str] = mapped_column(String(10), nullable=False)
     number_of_guests: Mapped[str] = mapped_column(String(10), nullable=False)
-    footege_room: Mapped[str] = mapped_column(String(10), nullable=False)
-    propertie_choice: Mapped[PropertieChoise] = mapped_column(
-        PgEnum(
-            PropertieChoise,
-            name="propertiechoise",
-            create_type=False,
-            values_callable=lambda n: [item.value for item in n],
-        ),
-        nullable=False,
-        default=PropertieChoise.DEFAULT_VALUE,
-    )
+    room_area: Mapped[str] = mapped_column(String(10), nullable=False)
+    no_children: Mapped[str] = mapped_column(Boolean, nullable=True, default=True)
+    no_parties: Mapped[str] = mapped_column(Boolean, nullable=True, default=True)
+    no_smoking: Mapped[str] = mapped_column(Boolean, nullable=True, default=True)
+    no_pets: Mapped[str] = mapped_column(Boolean, nullable=True, default=True)
     apartmens_bunch: Mapped["Apartmens"] = relationship(
         back_populates="properties_bunch",
         uselist=False,

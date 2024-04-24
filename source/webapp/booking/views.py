@@ -2,17 +2,26 @@ from flask import Blueprint, flash, render_template, redirect, url_for
 
 from webapp.lib.db import db
 from webapp.booking.forms import AddApartmensForm
-from webapp.lib.models import Apartmens, ApartmensTypeChoice, PaymensTypeChoice
+from webapp.lib.models import (
+    Apartmens,
+    ApartmensTypeChoice,
+    PaymensTypeChoice,
+    Comfort,
+    Propertie,
+)
 
 blueprint = Blueprint("apartmens", __name__, url_prefix="/users")
 
 
+# TODO: пускать пользователя к форме через проверку юзера
 @blueprint.route("/apartmens")
 def apartmens():
     title = "Apartmens add"
     form = AddApartmensForm()
-    rent_options = [choice.value for choice in ApartmensTypeChoice]
-    payment_options = [choice.value for choice in PaymensTypeChoice]
+    rent_options = [(choice.name, choice.value) for choice in ApartmensTypeChoice]
+    payment_options = [(choice.name, choice.value) for choice in PaymensTypeChoice]
+    print(rent_options)
+    print(payment_options)
     return render_template(
         "booking/add_form_apart.html",
         page_title=title,
@@ -30,15 +39,15 @@ def add_apartmens():
         rent_type = form.rent_type.data
         payment_type = form.payment_type.data
         # Подтверждаем, что выбранный rent_type является допустимым типом выбора
-        if rent_type not in [choice.value for choice in ApartmensTypeChoice]:
+        if rent_type not in [choice.name for choice in ApartmensTypeChoice]:
             flash("Выбран не верный тип аренды")
             return redirect(url_for("apartmens.apartmens"))
 
-        if payment_type not in [choice.value for choice in PaymensTypeChoice]:
+        if payment_type not in [choice.name for choice in PaymensTypeChoice]:
             flash("Выбран не верный тип оплаты")
             return redirect(url_for("apartmens.apartmens"))
 
-        new_apartmens = Apartmens(
+        apartmens = Apartmens(
             country=form.country.data,
             city=form.city.data,
             address=form.address.data,
@@ -49,11 +58,38 @@ def add_apartmens():
             apartment_number=form.apartment_number.data,
             number_of_beds=form.number_of_beds.data,
             number_of_guests=form.number_of_guests.data,
-            footege_room=form.footege_room.data,
+            room_area=form.room_area.data,
         )
-        db.session.add(new_apartmens)
+        try:
+            db.session.add(apartmens)
+            db.session.commit()
+        except Exception as e:
+            flash(f"Ошибка ввода: {str(e)}")
+            db.session.rollback()
+            return redirect(url_for("apartmens.apartmens"))
+
+            comfort = Comfort(
+                apartmens_id=apartmens.id,
+                wi_fi=form.wi_fi.data,
+                hair_dryer=form.hair_dryer.data,
+                towels=form.towels.data,
+                balcony=form.balcony.data,
+                air_conditioner=form.air_conditioner.data,
+                tv=form.tv.data,
+            )
+            db.session.add(comfort)
+            db.session.commit()
+
+        propertie = Propertie(
+            apartmens_id=apartmens.id,
+            no_children=form.no_children.data,
+            no_parties=form.no_parties.data,
+            no_smoking=form.no_smoking.data,
+            no_pets=form.no_pets.data,
+        )
+        db.session.add(propertie)
         db.session.commit()
         flash("Обьявление отправлено на модерацию.")
         return redirect(url_for("intro.index"))
-    flash("Заполните все поля или исправте ошибки в формате.")
+    flash(f"Заполните все поля или исправте ошибки в формате. {form.errors}")
     return redirect(url_for("apartmens.apartmens"))
