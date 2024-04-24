@@ -54,11 +54,6 @@ def add_apartmens():
             description=form.description.data,
             payment_type=payment_type,
             rent_type=rent_type,
-            floor=form.floor.data,
-            apartment_number=form.apartment_number.data,
-            number_of_beds=form.number_of_beds.data,
-            number_of_guests=form.number_of_guests.data,
-            room_area=form.room_area.data,
         )
         try:
             db.session.add(apartmens)
@@ -80,15 +75,20 @@ def add_apartmens():
             db.session.add(comfort)
             db.session.commit()
 
-        propertie = Propertie(
-            apartmens_id=apartmens.id,
-            no_children=form.no_children.data,
-            no_parties=form.no_parties.data,
-            no_smoking=form.no_smoking.data,
-            no_pets=form.no_pets.data,
-        )
-        db.session.add(propertie)
-        db.session.commit()
+            propertie = Propertie(
+                apartmens_id=apartmens.id,
+                floor=form.floor.data,
+                apartment_number=form.apartment_number.data,
+                number_of_beds=form.number_of_beds.data,
+                number_of_guests=form.number_of_guests.data,
+                room_area=form.room_area.data,
+                no_children=form.no_children.data,
+                no_parties=form.no_parties.data,
+                no_smoking=form.no_smoking.data,
+                no_pets=form.no_pets.data,
+            )
+            db.session.add(propertie)
+            db.session.commit()
         flash("Обьявление отправлено на модерацию.")
         return redirect(url_for("intro.index"))
     flash(f"Заполните все поля или исправте ошибки в формате. {form.errors}")

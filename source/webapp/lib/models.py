@@ -12,7 +12,9 @@ from sqlalchemy.dialects.postgresql import ENUM as PgEnum
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from webapp.lib.db import Base, engine
+from webapp.lib.db import Base, engine, db
+
+db.metadata.clear()
 
 
 class ApartmensTypeChoice(Enum):
@@ -78,26 +80,32 @@ class Apartmens(Base):
     )
     accommodations_bunch: Mapped["Accommodation"] = relationship(
         back_populates="apartmens_bunch",
+        foreign_keys=[accommodation_id],
         uselist=False,
     )
     comforts_bunch: Mapped[list["Comfort"]] = relationship(
         back_populates="apartmens_bunch",
+        foreign_keys=[comfort_id],
         uselist=True,
     )
     payments_bunch: Mapped["Payment"] = relationship(
         back_populates="apartmens_bunch",
+        foreign_keys=[payment_id],
         uselist=False,
     )
     properties_bunch: Mapped[list["Propertie"]] = relationship(
         back_populates="apartmens_bunch",
+        foreign_keys=[propertie_id],
         uselist=True,
     )
-    comments_bunch: Mapped[list["Comment"]] = relationship(
+    comment_bunch: Mapped[list["Comment"]] = relationship(
         back_populates="apartmens_bunch",
+        foreign_keys=[comment_id],
         uselist=True,
     )
     user_bunch: Mapped[list["User"]] = relationship(
         back_populates="apartmens_bunch",
+        foreign_keys=[user_id],
         uselist=False,
     )
 
@@ -234,10 +242,12 @@ class Comment(Base):
     description: Mapped[Optional[Text]] = mapped_column(Text)
     apartmens: Mapped["Apartmens"] = relationship(
         back_populates="comment_bunch",
+        foreign_keys=[apartmens_id],
         uselist=False,
     )
     user_bunch: Mapped["User"] = relationship(
         back_populates="comment_bunch",
+        foreign_keys=[user_id],
         uselist=False,
     )
 
