@@ -18,6 +18,9 @@ class LoginForm(FlaskForm):
         "Remember me", default=True, render_kw={"class": "form-check-input"}
     )
     submit = SubmitField("Sign in", render_kw={"class": "btn btn-primary"})
+    register_submit = SubmitField(
+        "Registration", render_kw={"class": "btn btn-primary"}
+    )
 
 
 class RegistrationForm(FlaskForm):
@@ -43,7 +46,7 @@ class RegistrationForm(FlaskForm):
         validators=[DataRequired(), EqualTo("password")],
         render_kw={"class": "form-control"},
     )
-    submit = SubmitField("Sign in", render_kw={"class": "btn btn-primary"})
+    submit = SubmitField("Send", render_kw={"class": "btn btn-primary"})
 
     def validate_useraname(self, first_name, last_name):
         user_count = User.query.filter_by(

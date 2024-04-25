@@ -1,4 +1,5 @@
 from flask import Blueprint, flash, render_template, redirect, url_for
+from flask_login import current_user, login_required
 
 from webapp.lib.db import db
 from webapp.booking.forms import AddApartmensForm
@@ -15,13 +16,12 @@ blueprint = Blueprint("apartmens", __name__, url_prefix="/users")
 
 # TODO: пускать пользователя к форме через проверку юзера
 @blueprint.route("/apartmens")
+@login_required
 def apartmens():
     title = "Apartmens add"
     form = AddApartmensForm()
     rent_options = [(choice.name, choice.value) for choice in ApartmensTypeChoice]
     payment_options = [(choice.name, choice.value) for choice in PaymensTypeChoice]
-    print(rent_options)
-    print(payment_options)
     return render_template(
         "booking/add_form_apart.html",
         page_title=title,
@@ -48,9 +48,11 @@ def add_apartmens():
             return redirect(url_for("apartmens.apartmens"))
 
         apartmens = Apartmens(
+            user_id=current_user.id,
             country=form.country.data,
             city=form.city.data,
             address=form.address.data,
+            title=form.title.data,
             description=form.description.data,
             payment_type=payment_type,
             rent_type=rent_type,

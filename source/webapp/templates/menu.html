@@ -1,0 +1,28 @@
+<nav
+  class="navbar navbar-expand-lg navbar-light bg-light justify-content-center"
+>
+  <ul class="nav w-100 justify-content-center">
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="#">Главная</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">О сервисе</a>
+    </li>
+      {% if current_user.is_authenticated %}
+    <li class="nav-item">
+      <span class="nav-link">Пользователь, {{ current_user.first_name }}</span>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('apartmens.apartmens') }}">Create Post</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('user.logout') }}">Log out</a>
+    </li>
+      {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('user.login') }}">Log in</a>
+    </li>
+      {% endif %}
+    </li>
+  </ul>
+</nav>

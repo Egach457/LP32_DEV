@@ -7,6 +7,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
+    <title>{{ page_title }}</title>
 
     <!-- Bootstrap CSS -->
     <link
@@ -25,28 +26,11 @@
   </head>
 
   <body>
-    <nav
-      class="navbar navbar-expand-lg navbar-light bg-light justify-content-center"
-    >
-      <ul class="nav w-100 justify-content-center">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Главная</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">О сервисе</a>
-        </li>
-        <li class="nav-item">
-          {% if current_user.is_authenticated %}
-          <a class="nav-link" href="{{ url_for('user.logout') }}">Log out</a>
-          {% else %}
-          <a class="nav-link" href="{{ url_for('user.login') }}">Log in</a>
-          {% endif %}
-        </li>
-      </ul>
-    </nav>
-
-    {% block content %} {% endblock %}
-
+    {% include "menu.html" %}
+    <div class="container">
+      <h2 class="text-center">{{ page_title }}</h2>
+          {% block content %} {% endblock %}
+    </div>
     <!-- Footer -->
     <footer class="text-center text-lg-start bg-body-tertiary text-muted">
       <!-- Section: Social media -->

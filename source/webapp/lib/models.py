@@ -35,21 +35,6 @@ class Apartmens(Base):
     __tablename__ = "apartmens"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    accommodation_id: Mapped[int] = mapped_column(
-        ForeignKey("accommodations.id", ondelete="CASCADE"), index=True, nullable=False
-    )
-    comfort_id: Mapped[int] = mapped_column(
-        ForeignKey("comforts.id", ondelete="CASCADE"), index=True, nullable=False
-    )
-    payment_id: Mapped[int] = mapped_column(
-        ForeignKey("payments.id", ondelete="CASCADE"), index=True, nullable=False
-    )
-    propertie_id: Mapped[int] = mapped_column(
-        ForeignKey("properties.id", ondelete="CASCADE"), index=True, nullable=False
-    )
-    comment_id: Mapped[int] = mapped_column(
-        ForeignKey("comments.id", ondelete="CASCADE"), index=True, nullable=False
-    )
     user_id: Mapped[int] = mapped_column(
         ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False
     )
@@ -80,30 +65,25 @@ class Apartmens(Base):
     )
     accommodations_bunch: Mapped["Accommodation"] = relationship(
         back_populates="apartmens_bunch",
-        foreign_keys=[accommodation_id],
         uselist=False,
     )
     comforts_bunch: Mapped[list["Comfort"]] = relationship(
         back_populates="apartmens_bunch",
-        foreign_keys=[comfort_id],
         uselist=True,
     )
     payments_bunch: Mapped["Payment"] = relationship(
         back_populates="apartmens_bunch",
-        foreign_keys=[payment_id],
         uselist=False,
     )
     properties_bunch: Mapped[list["Propertie"]] = relationship(
         back_populates="apartmens_bunch",
-        foreign_keys=[propertie_id],
         uselist=True,
     )
     comment_bunch: Mapped[list["Comment"]] = relationship(
         back_populates="apartmens_bunch",
-        foreign_keys=[comment_id],
         uselist=True,
     )
-    user_bunch: Mapped[list["User"]] = relationship(
+    user_bunch: Mapped["User"] = relationship(
         back_populates="apartmens_bunch",
         foreign_keys=[user_id],
         uselist=False,
@@ -240,7 +220,7 @@ class Comment(Base):
     )
     date_create: Mapped[DateTime] = mapped_column(DateTime)
     description: Mapped[Optional[Text]] = mapped_column(Text)
-    apartmens: Mapped["Apartmens"] = relationship(
+    apartmens_bunch: Mapped["Apartmens"] = relationship(
         back_populates="comment_bunch",
         foreign_keys=[apartmens_id],
         uselist=False,

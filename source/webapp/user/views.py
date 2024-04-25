@@ -11,13 +11,14 @@ blueprint = Blueprint("user", __name__, url_prefix="/users")
 @blueprint.route("/login")
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for("intro.index"))
+        return redirect(url_for("base_intro"))
 
     title = "Login"
     login_form = LoginForm()
     return render_template("user/login.html", page_title=title, form=login_form)
 
 
+# Изменил redirect(intro.index)
 @blueprint.route("/process-login", methods=["POST"])
 def process_login():
     form = LoginForm()
@@ -36,13 +37,13 @@ def process_login():
 def logout():
     logout_user()
     flash("Вы успешно разлогинились")
-    return redirect(url_for("intro.index"))
+    return redirect(url_for("base_intro"))
 
 
 @blueprint.route("/register")
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for("intro.index"))
+        return redirect(url_for("base_intro"))
     title = "Registration"
     form = RegistrationForm()
     return render_template("user/registration.html", page_title=title, form=form)
