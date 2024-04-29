@@ -20,8 +20,8 @@ blueprint = Blueprint("apartmens", __name__, url_prefix="/users")
 def apartmens():
     title = "Apartmens add"
     form = AddApartmensForm()
-    rent_options = [(choice.name, choice.value) for choice in ApartmensTypeChoice]
-    payment_options = [(choice.name, choice.value) for choice in PaymensTypeChoice]
+    rent_options = [choice.value for choice in ApartmensTypeChoice]
+    payment_options = [choice.value for choice in PaymensTypeChoice]
     return render_template(
         "booking/add_form_apart.html",
         page_title=title,
@@ -38,32 +38,29 @@ def add_apartmens():
         # Получаем rent_type из формы
         rent_type = form.rent_type.data
         payment_type = form.payment_type.data
+        print(rent_type, " - ", form.rent_type.data)
         # Подтверждаем, что выбранный rent_type является допустимым типом выбора
-        if rent_type not in [choice.name for choice in ApartmensTypeChoice]:
+        if rent_type not in [choice.value for choice in ApartmensTypeChoice]:
             flash("Выбран не верный тип аренды")
             return redirect(url_for("apartmens.apartmens"))
 
-        if payment_type not in [choice.name for choice in PaymensTypeChoice]:
+        if payment_type not in [choice.value for choice in PaymensTypeChoice]:
             flash("Выбран не верный тип оплаты")
             return redirect(url_for("apartmens.apartmens"))
 
-        apartmens = Apartmens(
-            user_id=current_user.id,
-            country=form.country.data,
-            city=form.city.data,
-            address=form.address.data,
-            title=form.title.data,
-            description=form.description.data,
-            payment_type=payment_type,
-            rent_type=rent_type,
-        )
         try:
+            apartmens = Apartmens(
+                user_id=current_user.id,
+                country=form.country.data,
+                city=form.city.data,
+                address=form.address.data,
+                title=form.title.data,
+                description=form.description.data,
+                payment_type=payment_type,
+                rent_type=rent_type,
+            )
             db.session.add(apartmens)
             db.session.commit()
-        except Exception as e:
-            flash(f"Ошибка ввода: {str(e)}")
-            db.session.rollback()
-            return redirect(url_for("apartmens.apartmens"))
 
             comfort = Comfort(
                 apartmens_id=apartmens.id,
@@ -91,6 +88,10 @@ def add_apartmens():
             )
             db.session.add(propertie)
             db.session.commit()
+        except Exception as e:
+            flash(f"Ошибка ввода: {str(e)}")
+            db.session.rollback()
+        return redirect(url_for("apartmens.apartmens"))
         flash("Обьявление отправлено на модерацию.")
         return redirect(url_for("intro.index"))
     flash(f"Заполните все поля или исправте ошибки в формате. {form.errors}")

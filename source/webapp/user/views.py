@@ -11,7 +11,7 @@ blueprint = Blueprint("user", __name__, url_prefix="/users")
 @blueprint.route("/login")
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for("base_intro"))
+        return redirect(url_for("intro.index"))
 
     title = "Login"
     login_form = LoginForm()
@@ -37,7 +37,7 @@ def process_login():
 def logout():
     logout_user()
     flash("Вы успешно разлогинились")
-    return redirect(url_for("base_intro"))
+    return redirect(url_for("intro.index"))
 
 
 @blueprint.route("/register")

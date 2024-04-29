@@ -8,126 +8,109 @@ from webapp.lib.models import ApartmensTypeChoice, PaymensTypeChoice
 
 class AddApartmensForm(FlaskForm):
     country = StringField(
-        "Country",
+        "Страна",
         validators=[DataRequired()],
         render_kw={"class": "form-control"},
     )
     city = StringField(
-        "City",
+        "Город",
         validators=[DataRequired()],
         render_kw={"class": "form-control"},
     )
     address = StringField(
-        "Address",
+        "Адрес",
         validators=[DataRequired()],
         render_kw={"class": "form-control"},
     )
     title = StringField(
-        "Title",
+        "Заголовок",
         validators=[DataRequired()],
         render_kw={"class": "form-control"},
     )
     description = TextAreaField(
-        "Description",
+        "Описание",
         validators=[DataRequired()],
         render_kw={"class": "form-control"},
     )
     rent_type = SelectField(
-        "Rent type",
-        choices=[(choice.name, choice.value) for choice in ApartmensTypeChoice],
-        validators=[
-            InputRequired(),
-            AnyOf([choice.name for choice in ApartmensTypeChoice]),
-        ],
+        "Тип жилья",
+        choices=[choice.value for choice in ApartmensTypeChoice],
+        validators=[DataRequired()],
         render_kw={"class": "form-control"},
     )
     payment_type = SelectField(
-        "Payment type",
-        choices=[(choice.name, choice.value) for choice in PaymensTypeChoice],
-        validators=[
-            InputRequired(),
-            AnyOf([choice.name for choice in PaymensTypeChoice]),
-        ],
+        "Тип оплаты",
+        choices=[choice.value for choice in PaymensTypeChoice],
+        validators=[DataRequired()],
         render_kw={"class": "form-control"},
     )
     floor = StringField(
-        "Floor",
+        "Этаж",
         validators=[DataRequired()],
         render_kw={"class": "form-control"},
     )
     apartment_number = StringField(
-        "Apartment number",
+        "Номер апартаментов",
         validators=[DataRequired()],
         render_kw={"class": "form-control"},
     )
     number_of_beds = StringField(
-        "Number of beds",
+        "Количество кроватей",
         validators=[DataRequired()],
         render_kw={"class": "form-control"},
     )
     number_of_guests = StringField(
-        "Number of guests",
+        "Количество гостей",
         validators=[DataRequired()],
         render_kw={"class": "form-control"},
     )
     room_area = StringField(
-        "Room area",
+        "Площадь аренды",
         validators=[DataRequired()],
         render_kw={"class": "form-control"},
     )
     # Формы для switches (Propertie, Comfort)
     wi_fi = BooleanField(
         "Wi-Fi",
-        validators=[DataRequired()],
         render_kw={"class": "form-check-input"},
     )
     hair_dryer = BooleanField(
-        "Hair dryer",
-        validators=[DataRequired()],
+        "Фен",
         render_kw={"class": "form-check-input"},
     )
     towels = BooleanField(
-        "Towels",
-        validators=[DataRequired()],
+        "Полотенца",
         render_kw={"class": "form-check-input"},
     )
     balcony = BooleanField(
-        "Balcony",
-        validators=[DataRequired()],
+        "Лоджия",
         render_kw={"class": "form-check-input"},
     )
     air_conditioner = BooleanField(
-        "Air conditioner",
-        validators=[DataRequired()],
+        "Кондиционер",
         render_kw={"class": "form-check-input"},
     )
     tv = BooleanField(
         "TV",
-        validators=[DataRequired()],
         render_kw={"class": "form-check-input"},
     )
     no_children = BooleanField(
-        "No children",
-        validators=[DataRequired()],
+        "Без детей",
         render_kw={"class": "form-check-input"},
     )
     no_parties = BooleanField(
-        "No parties",
-        validators=[DataRequired()],
+        "Без тусовок",
         render_kw={"class": "form-check-input"},
     )
     no_smoking = BooleanField(
-        "No smoking",
-        validators=[DataRequired()],
+        "Не курить",
         render_kw={"class": "form-check-input"},
     )
     no_pets = BooleanField(
-        "No pets",
-        validators=[DataRequired()],
+        "Без животных",
         render_kw={"class": "form-check-input"},
     )
     submit = SubmitField(
         "Edite",
-        validators=[DataRequired()],
         render_kw={"class": "btn btn-primary"},
     )

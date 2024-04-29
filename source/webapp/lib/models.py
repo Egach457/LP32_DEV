@@ -8,7 +8,6 @@ from sqlalchemy import (
     Text,
     ForeignKey,
 )
-from sqlalchemy.dialects.postgresql import ENUM as PgEnum
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -18,7 +17,6 @@ db.metadata.clear()
 
 
 class ApartmensTypeChoice(Enum):
-    DEFAULT_VALUE = "Не определенно"
     APARTMENT = "Квартира"
     HOUSE = "Дом"
     ROOM = "Комната"
@@ -26,7 +24,6 @@ class ApartmensTypeChoice(Enum):
 
 
 class PaymensTypeChoice(Enum):
-    DEFAULT_VALUE = "Не определенно"
     CASH = "Наличные"
     CARD = "Карта"
 
@@ -43,26 +40,8 @@ class Apartmens(Base):
     address: Mapped[str] = mapped_column(String(164), nullable=False)
     title: Mapped[str] = mapped_column(String(164), nullable=False)
     description: Mapped[Optional[Text]] = mapped_column(Text, nullable=True)
-    rent_type: Mapped[ApartmensTypeChoice] = mapped_column(
-        PgEnum(
-            ApartmensTypeChoice,
-            name="apartmenstypechoice",
-            create_type=False,
-            values_callable=lambda n: [item.value for item in n],
-        ),
-        nullable=False,
-        default=ApartmensTypeChoice.DEFAULT_VALUE,
-    )
-    payment_type: Mapped[PaymensTypeChoice] = mapped_column(
-        PgEnum(
-            PaymensTypeChoice,
-            name="paymenstypechoice",
-            create_type=False,
-            values_callable=lambda n: [item.value for item in n],
-        ),
-        nullable=False,
-        default=PaymensTypeChoice.DEFAULT_VALUE,
-    )
+    rent_type: Mapped[str] = mapped_column(String(32), nullable=False)
+    payment_type: Mapped[str] = mapped_column(String(32), nullable=False)
     accommodations_bunch: Mapped["Accommodation"] = relationship(
         back_populates="apartmens_bunch",
         uselist=False,

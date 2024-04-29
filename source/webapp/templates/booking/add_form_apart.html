@@ -19,15 +19,15 @@
     <div class="form-group">{{ form.rent_type.label }}</div>
     <select class="form-select" name="{{ form.rent_type.name }}" aria-label="Default select example">
         <option selected>Open this select menu</option>
-        {% for value, label in rent_options %}
-        <option value="{{ value }}" {% if form.rent_type.data == value %}selected{% endif %}>{{ label }}</option>
+        {% for choice in rent_options %}
+        <option value="{{ choice }}" {% if form.rent_type.data == choice %}selected{% endif %}>{{ choice }}</option>
         {% endfor %}
       </select>
     <div class="form-group">{{ form.payment_type.label }}</div>
-    <select class="form-select" name="{{ form.payment_type.name }}" aria-label="Default select example">
+    <select class="form-select" name="{{ form.payment_type.name}}" aria-label="Default select example">
         <option selected>Open this select menu</option>
-        {% for value, label in payment_options %}
-        <option value="{{ value }}" {% if form.payment_type.data == value %}selected{% endif %}>{{ label}}</option>
+        {% for choice in payment_options %}
+        <option value="{{ choice }}" {% if form.payment_type.data == choice %}selected{% endif %}>{{ choice }}</option>
         {% endfor %}
       </select>
     <div class="form-group">{{ form.floor.label }} {{ form.floor() }}</div>
