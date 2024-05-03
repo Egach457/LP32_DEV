@@ -1,8 +1,13 @@
-from flask import Blueprint, flash, render_template, redirect, url_for
+import os
+import tempfile
+from flask import Blueprint, flash, render_template, redirect, url_for, request
 from flask_login import current_user, login_required
+from werkzeug.utils import secure_filename
 
 from webapp.lib.db import db
 from webapp.booking.forms import AddApartmensForm
+from webapp.pydrive.drive import upload_photo
+from webapp.pydrive.custom_temp.create_custom_temp_dir import create_custom_temp_dir
 from webapp.lib.models import (
     Apartmens,
     ApartmensTypeChoice,
@@ -38,8 +43,21 @@ def add_apartmens():
         # Получаем rent_type из формы
         rent_type = form.rent_type.data
         payment_type = form.payment_type.data
-        print(rent_type, " - ", form.rent_type.data)
-        # Подтверждаем, что выбранный rent_type является допустимым типом выбора
+        # Получаем файл изображения
+        image_file = request.files[form.image.name]
+        if image_file:
+            # Создайте собственный временный каталог с помощью функции create_custom_temp_dir()
+            custom_temp_dir = create_custom_temp_dir()
+            # Временно сохраняем файл в пользовательском каталоге
+            temp_file_path = os.path.join(
+                custom_temp_dir, secure_filename(image_file.filename)
+            )
+            image_file.save(temp_file_path)
+            print(temp_file_path)
+            print(os.path.exists(temp_file_path))
+            # Загружаем файл на Google Disk
+            file = upload_photo(temp_file_path)
+            print(type(file))
         if rent_type not in [choice.value for choice in ApartmensTypeChoice]:
             flash("Выбран не верный тип аренды")
             return redirect(url_for("apartmens.apartmens"))
@@ -58,6 +76,7 @@ def add_apartmens():
                 description=form.description.data,
                 payment_type=payment_type,
                 rent_type=rent_type,
+                image_path=file,
             )
             db.session.add(apartmens)
             db.session.commit()
@@ -88,10 +107,12 @@ def add_apartmens():
             )
             db.session.add(propertie)
             db.session.commit()
+            os.remove(temp_file_path)
+            os.rmdir(custom_temp_dir)
         except Exception as e:
             flash(f"Ошибка ввода: {str(e)}")
             db.session.rollback()
-        return redirect(url_for("apartmens.apartmens"))
+            return redirect(url_for("apartmens.apartmens"))
         flash("Обьявление отправлено на модерацию.")
         return redirect(url_for("intro.index"))
     flash(f"Заполните все поля или исправте ошибки в формате. {form.errors}")
