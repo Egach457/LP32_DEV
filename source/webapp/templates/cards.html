@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <form class="bg-light p-4 w-100">
+        <h4 class="text-center mb-4">Фильтры</h4>
+        <div class="form-group">
+          <label for="city">Город:</label>
+          <select class="form-control" id="city">
+            <option>Москва</option>
+            <option>Санкт-Петербург</option>
+            <option>Казань</option>
+            <option>Нижний Новгород</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="checkin">Дата заезда:</label>
+          <input type="date" class="form-control" id="checkin">
+        </div>
+        <div class="form-group">
+          <label for="checkout">Дата выезда:</label>
+          <input type="date" class="form-control" id="checkout">
+        </div>
+        <div class="form-group">
+          <label for="guests">Количество гостей:</label>
+          <select class="form-control" id="guests">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary btn-block">Применить фильтр</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    {% for card in cards_list %}
+    <div class="col-md-4 mx-2 mx-auto">
+      <div class="card mt-4">
+        <img src="/static/img/home1.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{ card.title }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{ card.country }}, {{ card.city }}, {{ card.address }}</h6>
+          <p class="card-text">{{ card.description }}</p>
+          <input type="hidden" name="id" value="{{ card.id }}">
+          <a href="{{ url_for('card_details.index', card_id=card.id) }}" class="btn btn-primary btn-block">Подробнее</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}
+

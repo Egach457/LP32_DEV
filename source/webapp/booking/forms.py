@@ -111,6 +111,6 @@ class AddApartmensForm(FlaskForm):
         render_kw={"class": "form-check-input"},
     )
     submit = SubmitField(
-        "Edite",
+        "Загрузить объявление",
         render_kw={"class": "btn btn-primary"},
     )

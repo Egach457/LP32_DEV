@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<br>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6 offset-md-3 text-center">
+      <img src="/static/img/card_details.jpg" alt="Апартаменты" class="img-fluid rounded">
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-md-6">
+      <h1>{{ apartment.title }}</h1>
+      <p><strong>Тип объекта:</strong> {{ apartment.rent_type }}</p>
+      <p><strong>Адрес:</strong> {{ apartment.country }}, {{ apartment.city }}, {{ apartment.address }}</p>
+      <p><strong>Этаж:</strong> {{ propers.floor }}</p>
+      <p><strong>Номер апартаментов:</strong> {{ propers.apartment_number }}</p>
+      <p><strong>Количество спален:</strong> {{ propers.number_of_beds }}</p>
+      <p><strong>Максимальное количество гостей:</strong> {{ propers.number_of_guests }}</p>
+      <p><strong>Площадь объекта(В m2):</strong> {{ propers.room_area }}</p>
+      <p><strong>Оплата:</strong> {{ apartment.payment_type }}</p>
+      <p><strong>С детьми:</strong> {{ propers.no_children }}</p>
+      <p><strong>Проведение тусовок:</strong> {{ propers.no_parties }}</p>
+      <p><strong>Курение на объекте:</strong> {{ propers.no_smoking }}</p>
+      <p><strong>Расположение животных:</strong> {{ propers.no_pets }}</p>
+      <p><strong>Наличие Wi-Fi:</strong> {{ comforts.wi_fi}}</p>
+      <p><strong>Наличие фена:</strong> {{ comforts.hair_dryer}}</p>
+      <p><strong>Наличие полотенец:</strong> {{ comforts.towels}}</p>
+      <p><strong>Наличие балкона:</strong> {{ comforts.balcony}}</p>
+      <p><strong>Наличие кондиционера:</strong> {{ comforts.air_conditioner}}</p>
+      <p><strong>Наличие TV:</strong> {{ comforts.tv}}</p>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col">
+      <h2>Описание объекта</h2>
+      <p>{{ apartment.description }}</p>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col text-center">
+      <form>
+        <div class="form-group">
+          <label for="checkin_date">Дата въезда:</label>
+          <input type="date" class="form-control" id="checkin_date" required>
+        </div>
+        <div class="form-group">
+          <label for="checkout_date">Дата выезда:</label>
+          <input type="date" class="form-control" id="checkout_date" required>
+        </div>
+        <div class="form-group">
+          <label for="guest_count">Количество гостей:</label>
+          <input type="number" class="form-control" id="guest_count" min="1" required>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Забронировать</button>
+      </form>
+    </div>
+  </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+{% endblock %}
