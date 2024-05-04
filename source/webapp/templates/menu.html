@@ -3,17 +3,23 @@
 >
   <ul class="nav w-100 justify-content-center">
     <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="#">Главная</a>
+      <a class="nav-link active" aria-current="page" href="/">Главная</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">О сервисе</a>
+      <a class="nav-link" href="/about">О сервисе</a>
     </li>
       {% if current_user.is_authenticated %}
     <li class="nav-item">
       <span class="nav-link">Пользователь, {{ current_user.first_name }}</span>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="{{ url_for('apartmens.apartmens') }}">Create Post</a>
+      <a class="nav-link" href="{{ url_for('apartmens.apartmens') }}">Создать объявление</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/booking_list">Объявления</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Бронирования</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="{{ url_for('user.logout') }}">Log out</a>
