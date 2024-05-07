@@ -9,157 +9,76 @@
       {% endfor %}
     {% endif %}
   {% endwith %}
-
-  <form action="{{ url_for('apartmens.add_apartmens') }}" method="POST">
+  <form action="{{ url_for('apartmens.add_apartmens') }}" method="POST" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
-
-    <table class="table table-bordered table-striped">
-      <tbody>
-        <tr>
-          <td>{{ form.country.label }}</td>
-          <td>{{ form.country() }}</td>
-        </tr>
-        <tr>
-          <td>{{ form.city.label }}</td>
-          <td>{{ form.city() }}</td>
-        </tr>
-        <tr>
-          <td>{{ form.address.label }}</td>
-          <td>{{ form.address() }}</td>
-        </tr>
-        <tr>
-          <td>{{ form.title.label }}</td>
-          <td>{{ form.title() }}</td>
-        </tr>
-        <tr>
-          <td>{{ form.description.label }}</td>
-          <td>{{ form.description() }}</td>
-        </tr>
-        <tr>
-          <td>{{ form.rent_type.label }}</td>
-          <td>
-            <select class="form-select" name="{{ form.rent_type.name }}" aria-label="Default select example">
-              <option selected>Выберите тип жилья</option>
-              {% for choice in rent_options %}
-              <option value="{{ choice }}" {% if form.rent_type.data == choice %}selected{% endif %}>{{ choice }}</option>
-              {% endfor %}
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td>{{ form.payment_type.label }}</td>
-          <td>
-            <select class="form-select" name="{{ form.payment_type.name}}" aria-label="Default select example">
-              <option selected>Как удобно оплатить?</option>
-              {% for choice in payment_options %}
-              <option value="{{ choice }}" {% if form.payment_type.data == choice %}selected{% endif %}>{{ choice }}</option>
-              {% endfor %}
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td>{{ form.floor.label }}</td>
-          <td>{{ form.floor() }}</td>
-        </tr>
-        <tr>
-          <td>{{ form.apartment_number.label }}</td>
-          <td>{{ form.apartment_number() }}</td>
-        </tr>
-        <tr>
-          <td>{{ form.number_of_beds.label }}</td>
-          <td>{{ form.number_of_beds() }}</td>
-        </tr>
-        <tr>
-          <td>{{ form.number_of_guests.label }}</td>
-          <td>{{ form.number_of_guests() }}</td>
-        </tr>
-        <tr>
-          <td>{{ form.room_area.label }}</td>
-          <td>{{ form.room_area() }}</td>
-        </tr>
-        <tr>
-          <td>{{ form.wi_fi.label }}</td>
-          <td>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="{{ form.wi_fi.id }}" name="{{ form.wi_fi.name }}"{% if form.wi_fi.data %}checked{% endif %}>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>{{ form.hair_dryer.label }}</td>
-          <td>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="{{ form.hair_dryer.id }}" name="{{ form.hair_dryer.name }}"{% if form.hair_dryer.data %}checked{% endif %}>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>{{ form.towels.label }}</td>
-          <td>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="{{ form.towels.id }}" name="{{ form.towels.name }}"{% if form.towels.data %}checked{% endif %}>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>{{ form.balcony.label }}</td>
-          <td>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="{{ form.balcony.id }}" name="{{ form.balcony.name }}"{% if form.balcony.data %}checked{% endif %}>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>{{ form.air_conditioner.label }}</td>
-          <td>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="{{ form.air_conditioner.id }}" name="{{ form.air_conditioner.name }}"{% if form.air_conditioner.data %}checked{% endif %}>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>{{ form.tv.label }}</td>
-          <td>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="{{ form.tv.id }}" name="{{ form.tv.name }}"{% if form.tv.data %}checked{% endif %}>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>{{ form.no_children.label }}</td>
-          <td>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="{{ form.no_children.id }}" name="{{ form.no_children.name }}"{% if form.no_children.data %}checked{% endif %}>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>{{ form.no_parties.label }}</td>
-          <td>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="{{ form.no_parties.id }}" name="{{ form.no_parties.name }}"{% if form.no_parties.data %}checked{% endif %}>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>{{ form.no_smoking.label }}</td>
-          <td>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="{{ form.no_smoking.id }}" name="{{ form.no_smoking.name }}"{% if form.no_smoking.data %}checked{% endif %}>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>{{ form.no_pets.label }}</td>
-          <td>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="{{ form.no_pets.id }}" name="{{ form.no_pets.name }}"{% if form.no_pets.data %}checked{% endif %}>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
+    <div class="form-group">{{ form.country.label }} {{ form.country() }}</div>
+    <div class="form-group">{{ form.city.label }} {{ form.city() }}</div>
+    <div class="form-group">{{ form.address.label }} {{ form.address() }}</div>
+    <div class="form-group">{{ form.title.label }} {{ form.title() }}</div>
+    <div class="form-group">{{ form.description.label }} {{ form.description() }}</div>
+    <div class="form-group">{{ form.rent_type.label }}</div>
+    <select class="form-select" name="{{ form.rent_type.name }}" aria-label="Default select example">
+        <option selected>Open this select menu</option>
+        {% for choice in rent_options %}
+        <option value="{{ choice }}" {% if form.rent_type.data == choice %}selected{% endif %}>{{ choice }}</option>
+        {% endfor %}
+      </select>
+    <div class="form-group">{{ form.payment_type.label }}</div>
+    <select class="form-select" name="{{ form.payment_type.name}}" aria-label="Default select example">
+        <option selected>Open this select menu</option>
+        {% for choice in payment_options %}
+        <option value="{{ choice }}" {% if form.payment_type.data == choice %}selected{% endif %}>{{ choice }}</option>
+        {% endfor %}
+      </select>
+      <div class="mb-3">
+        <label for="image" class="form-label">{{ form.image.label }}</label>
+        <input class="form-control" type="file" id="image" name="{{ form.image.name }}" accept="image/*">
+      </div>
+    <div class="form-group">{{ form.floor.label }} {{ form.floor() }}</div>
+    <div class="form-group">{{ form.apartment_number.label }} {{ form.apartment_number() }}</div>
+    <div class="form-group">{{ form.number_of_beds.label }} {{ form.number_of_beds() }}</div>
+    <div class="form-group">{{ form.number_of_guests.label }} {{ form.number_of_guests() }}</div>
+    <div class="form-group">{{ form.room_area.label }} {{ form.room_area() }}</div>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" role="switch" id="{{ form.wi_fi.id }}" name="{{ form.wi_fi.name }}"{% if form.wi_fi.data %}checked{% endif %}>
+      <label class="form-check-label" for="{{ form.wi_fi.id }}">{{ form.wi_fi.label }}</label>
+    </div>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" role="switch" id="{{ form.hair_dryer.id }}" name="{{ form.hair_dryer.name }}"{% if form.hair_dryer.data %}checked{% endif %}>
+      <label class="form-check-label" for="{{ form.hair_dryer.id }}">{{ form.hair_dryer.label }}</label>
+    </div>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" role="switch" id="{{ form.towels.id }}" name="{{ form.towels.name }}"{% if form.towels.data %}checked{% endif %}>
+      <label class="form-check-label" for="{{ form.towels.id }}">{{ form.towels.label }}</label>
+    </div>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" role="switch" id="{{ form.balcony.id }}" name="{{ form.balcony.name }}"{% if form.balcony.data %}checked{% endif %}>
+      <label class="form-check-label" for="{{ form.balcony.id }}">{{ form.balcony.label }}</label>
+    </div>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" role="switch" id="{{ form.air_conditioner.id }}" name="{{ form.air_conditioner.name }}"{% if form.air_conditioner.data %}checked{% endif %}>
+      <label class="form-check-label" for="{{ form.air_conditioner.id }}">{{ form.air_conditioner.label }}</label>
+    </div>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" role="switch" id="{{ form.tv.id }}" name="{{ form.tv.name }}"{% if form.tv.data %}checked{% endif %}>
+      <label class="form-check-label" for="{{ form.tv.id }}">{{ form.tv.label }}</label>
+    </div>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" role="switch" id="{{ form.no_children.id }}" name="{{ form.no_children.name }}"{% if form.no_children.data %}checked{% endif %}>
+      <label class="form-check-label" for="{{ form.no_children.id }}">{{ form.no_children.label }}</label>
+    </div>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" role="switch" id="{{ form.no_parties.id }}" name="{{ form.no_parties.name }}"{% if form.no_parties.data %}checked{% endif %}>
+      <label class="form-check-label" for="{{ form.no_parties.id }}">{{ form.no_parties.label }}</label>
+    </div>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" role="switch" id="{{ form.no_smoking.id }}" name="{{ form.no_smoking.name }}"{% if form.no_smoking.data %}checked{% endif %}>
+      <label class="form-check-label" for="{{ form.no_smoking.id }}">{{ form.no_smoking.label }}</label>
+    </div>
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" role="switch" id="{{ form.no_pets.id }}" name="{{ form.no_pets.name }}"{% if form.no_pets.data %}checked{% endif %}>
+      <label class="form-check-label" for="{{ form.no_pets.id }}">{{ form.no_pets.label }}</label>
+    </div>
     {{ form.submit }}
   </form>
 {% endblock %}

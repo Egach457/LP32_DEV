@@ -42,6 +42,7 @@ class Apartmens(Base):
     description: Mapped[Optional[Text]] = mapped_column(Text, nullable=True)
     rent_type: Mapped[str] = mapped_column(String(32), nullable=False)
     payment_type: Mapped[str] = mapped_column(String(32), nullable=False)
+    image_path: Mapped[Optional[str]] = mapped_column(String(225), nullable=True)
     accommodations_bunch: Mapped["Accommodation"] = relationship(
         back_populates="apartmens_bunch",
         uselist=False,

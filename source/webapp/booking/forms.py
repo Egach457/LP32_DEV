@@ -1,7 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, SelectField, StringField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired, InputRequired, AnyOf
-
+from wtforms import (
+    BooleanField,
+    FileField,
+    TextAreaField,
+    SelectField,
+    StringField,
+    SubmitField,
+)
+from wtforms.validators import DataRequired
 
 from webapp.lib.models import ApartmensTypeChoice, PaymensTypeChoice
 
@@ -69,6 +75,14 @@ class AddApartmensForm(FlaskForm):
         validators=[DataRequired()],
         render_kw={"class": "form-control"},
     )
+
+    # Форма для Файла
+    image = FileField(
+        "Фотографии",
+        # validators=[DataRequired()],
+        render_kw={"class": "form-control"},
+    )
+
     # Формы для switches (Propertie, Comfort)
     wi_fi = BooleanField(
         "Wi-Fi",
