@@ -124,6 +124,31 @@ class Comfort(Base):
         uselist=False,
     )
 
+
+    def get_boolean_values(self):
+        boolean_values = {
+            'wi-fi': self.wi_fi,
+            'hair_dryer': self.hair_dryer,
+            'towels': self.towels,
+            'balcony': self.balcony,
+            'air_conditioner': self.air_conditioner,
+            'tv': self.tv
+        }
+        for key, value in boolean_values.items():
+            if value is None:
+                continue
+            boolean_values[key] = 'Да' if value else 'Нет'
+        return boolean_values
+    
+
+    def to_dict(self):
+        boolean_values = self.get_boolean_values()
+        return {
+            'id': self.id,
+            'apartmens_id': self.apartmens_id,
+            **boolean_values
+        }
+    
     def __repr__(self) -> str:
         return f"Comfort id: {self.id}, {self.apartmens_id}"
 
@@ -148,6 +173,33 @@ class Propertie(Base):
         back_populates="properties_bunch",
         uselist=False,
     )
+    def get_boolean_values(self):
+        boolean_values = {
+            'no_children': self.no_children,
+            'no_parties': self.no_parties,
+            'no_smoking': self.no_smoking,
+            'no_pets': self.no_pets
+        }
+        for key, value in boolean_values.items():
+            if value is None:
+                continue
+            boolean_values[key] = 'Да' if value else 'Нет'
+        return boolean_values
+    
+
+    def to_dict(self):
+        boolean_values = self.get_boolean_values()
+        return {
+            'id': self.id,
+            'apartmens_id': self.apartmens_id,
+            'floor': self.floor,
+            'apartment_number': self.apartment_number,
+            'number_of_beds': self.number_of_beds,
+            'number_of_guests': self.number_of_guests,
+            'room_area': self.room_area,
+            **boolean_values
+        }
+    
 
     def __repr__(self) -> str:
         return f"Propertie id: {self.id}, {self.apartmens_id}"

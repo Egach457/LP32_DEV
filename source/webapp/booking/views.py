@@ -22,7 +22,7 @@ blueprint = Blueprint("apartmens", __name__, url_prefix="/users")
 @blueprint.route("/apartmens")
 @login_required
 def apartmens():
-    title = "Apartmens add"
+    title = "Создание объявления"
     form = AddApartmensForm()
     rent_options = [choice.value for choice in ApartmensTypeChoice]
     payment_options = [choice.value for choice in PaymensTypeChoice]
