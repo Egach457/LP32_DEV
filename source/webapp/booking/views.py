@@ -1,5 +1,4 @@
 import os
-import tempfile
 from flask import Blueprint, flash, render_template, redirect, url_for, request
 from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
@@ -53,11 +52,8 @@ def add_apartmens():
                 custom_temp_dir, secure_filename(image_file.filename)
             )
             image_file.save(temp_file_path)
-            print(temp_file_path)
-            print(os.path.exists(temp_file_path))
             # Загружаем файл на Google Disk
             file = upload_photo(temp_file_path)
-            print(type(file))
         if rent_type not in [choice.value for choice in ApartmensTypeChoice]:
             flash("Выбран не верный тип аренды")
             return redirect(url_for("apartmens.apartmens"))
@@ -113,6 +109,7 @@ def add_apartmens():
             flash(f"Ошибка ввода: {str(e)}")
             db.session.rollback()
             return redirect(url_for("apartmens.apartmens"))
+        # TODO: не отображается сообщение, скорее всего нужно поменять intro
         flash("Обьявление отправлено на модерацию.")
         return redirect(url_for("intro.index"))
     flash(f"Заполните все поля или исправте ошибки в формате. {form.errors}")
