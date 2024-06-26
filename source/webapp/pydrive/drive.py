@@ -1,10 +1,16 @@
+import os
+import mimetypes
+from dotenv import load_dotenv
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 from google.oauth2 import service_account
 from werkzeug.utils import secure_filename
-import mimetypes
 
-from webapp.lib.config import SERVICE_ACCOUNT_FILE, PARENT_FOLDER_ID
+# from webapp.lib.config import SERVICE_ACCOUNT_FILE, PARENT_FOLDER_ID
+load_dotenv()
+
+SERVICE_ACCOUNT_FILE = os.getenv("SERVICE_ACCOUNT_FILE")
+PARENT_FOLDER_ID = os.getenv("PARENT_FOLDER_ID")
 
 SCOPES = ["https://www.googleapis.com/auth/drive"]
 
@@ -34,7 +40,6 @@ def upload_photo(file_path):
         )
         .execute()
     )
-    print(f"Uploaded file metadata: {file}")
 
     return file["id"]
 

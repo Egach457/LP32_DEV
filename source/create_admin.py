@@ -12,7 +12,7 @@ with app.app_context():
     first_name = input("Введите имя: ")
     last_name = input("Введите фамилию: ")
     phone = input("Введите номре телефона: ")
-
+    #TODO: помнеть принты на yield
     if User.query.filter(User.email == email).count():
         print("Пользователь с таким именем уже существует")
         sys.exit(0)

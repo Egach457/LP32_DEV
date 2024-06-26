@@ -5,6 +5,7 @@ __pycache__/
 config.py
 client_secrets.json
 daily_rent_key.json
+.*
 
 # C extensions
 *.so
