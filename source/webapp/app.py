@@ -1,6 +1,8 @@
+import os
 from flask import Flask
 from flask_login import LoginManager
 from flask_migrate import Migrate
+from dotenv import load_dotenv
 
 
 from webapp.intro.views import blueprint as intro_blueprint
@@ -14,13 +16,19 @@ from webapp.booking_list.views import blueprint as booking_list
 
 from webapp.lib.models import User
 from webapp.lib.db import db
-from webapp.lib.config import CONFIG_APP
-from webapp.user.forms import LoginForm
+# from webapp.lib.config import CONFIG_APP
+# from webapp.user.forms import LoginForm
 
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_pyfile(CONFIG_APP)
+    load_dotenv()
+    # app.config.from_pyfile(CONFIG_APP)
+    app.config.update(
+        SECRET_KEY=os.environ.get("SECRET_KEY"),
+        SQLALCHEMY_DATABASE_URI=os.environ.get("SQLALCHEMY_DATABASE_URI"),
+        SQLALCHEMY_TRACK_MODIFICATIONS=False,
+    )
     db.init_app(app)
     migrate = Migrate(app, db)
 
