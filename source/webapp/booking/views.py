@@ -109,7 +109,7 @@ def add_apartmens():
             flash(f"Ошибка ввода: {str(e)}")
             db.session.rollback()
             return redirect(url_for("apartmens.apartmens"))
-        # TODO: не отображается сообщение, скорее всего нужно поменять intro
+        # BUG: нет оповещения. Появляется на другой странице.
         flash("Обьявление отправлено на модерацию.")
         return redirect(url_for("intro.index"))
     flash(f"Заполните все поля или исправте ошибки в формате. {form.errors}")
