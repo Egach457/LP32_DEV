@@ -10,4 +10,4 @@ RUN python -m pip install -r requirements.txt
 
 COPY . /app/
 
-CMD [ "flask", "--app", "webapp/app.py", "run", "--host", "0.0.0.0"]
+CMD [ "flask", "--app", "source/webapp/app.py", "run", "--host", "0.0.0.0"]

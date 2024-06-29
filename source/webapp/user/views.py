@@ -26,6 +26,7 @@ def process_login():
         email = User.query.filter(User.email == form.email.data).first()
         if email and email.check_password(form.password.data):
             login_user(email, remember=form.remember_me.data)
+            # BUG: нет оповещения о входе. Появляется на другой странице.
             flash("Вошли на сайт")
             return redirect(url_for("intro.index"))
 
@@ -36,6 +37,7 @@ def process_login():
 @blueprint.route("/logout")
 def logout():
     logout_user()
+    # BUG: нет оповещения. Появляется на другой странице.
     flash("Вы успешно разлогинились")
     return redirect(url_for("intro.index"))
 
@@ -63,6 +65,7 @@ def process_reg():
         new_user.set_password(form.password.data)
         db.session.add(new_user)
         db.session.commit()
+        # BUG: нет оповещения. Появляется на другой странице.
         flash("Вы успешно зарегистрировались")
         return redirect(url_for("intro.index"))
     else:
