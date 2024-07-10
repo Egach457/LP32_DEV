@@ -1,9 +1,8 @@
-from flask import Blueprint, flash, render_template, redirect, url_for
+from flask import Blueprint, flash, redirect, render_template, url_for
 from flask_login import current_user, login_user, logout_user
-
 from webapp.lib.db import db
-from webapp.user.forms import LoginForm, RegistrationForm
 from webapp.lib.models import User
+from webapp.user.forms import LoginForm, RegistrationForm
 
 blueprint = Blueprint("user", __name__, url_prefix="/users")
 
@@ -71,9 +70,5 @@ def process_reg():
     else:
         for field, errors in form.errors.items():
             for error in errors:
-                flash(
-                    "Ошибка в поле {}: {}".format(
-                        getattr(form, field).label.text, error
-                    )
-                )
+                flash("Ошибка в поле {}: {}".format(getattr(form, field).label.text, error))
         return redirect(url_for("user.register"))

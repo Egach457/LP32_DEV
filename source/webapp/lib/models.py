@@ -1,17 +1,11 @@
-from typing import Optional
 from enum import Enum
-from flask_login import UserMixin
-from sqlalchemy import (
-    Boolean,
-    String,
-    DateTime,
-    Text,
-    ForeignKey,
-)
-from sqlalchemy.orm import relationship, Mapped, mapped_column
-from werkzeug.security import generate_password_hash, check_password_hash
+from typing import Optional
 
-from webapp.lib.db import Base, engine, db
+from flask_login import UserMixin
+from sqlalchemy import Boolean, DateTime, ForeignKey, String, Text
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from webapp.lib.db import Base, db, engine
+from werkzeug.security import check_password_hash, generate_password_hash
 
 db.metadata.clear()
 
@@ -34,9 +28,7 @@ class Apartmens(Base):
     __tablename__ = "apartmens"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False
-    )
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False)
     country: Mapped[str] = mapped_column(String(64), nullable=False)
     city: Mapped[str] = mapped_column(String(64), nullable=False)
     address: Mapped[str] = mapped_column(String(164), nullable=False)
@@ -242,9 +234,7 @@ class Comment(Base):
     apartmens_id: Mapped[int] = mapped_column(
         ForeignKey("apartmens.id", ondelete="CASCADE"), index=True, nullable=False
     )
-    user_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False
-    )
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False)
     date_create: Mapped[DateTime] = mapped_column(DateTime)
     description: Mapped[Optional[Text]] = mapped_column(Text)
     apartmens_bunch: Mapped["Apartmens"] = relationship(

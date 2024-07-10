@@ -1,7 +1,8 @@
 from functools import wraps
 
-from flask import current_app, flash, request, redirect, url_for
+from flask import current_app, flash, redirect, request, url_for
 from flask_login import config, current_user
+
 
 def admin_required(func):
     @wraps(func)
@@ -16,4 +17,5 @@ def admin_required(func):
             flash("Эта страница доступна только админам")
             return redirect(url_for("intro.index"))
         return func(*args, **kwargs)
+
     return decorated_view

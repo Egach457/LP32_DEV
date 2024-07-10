@@ -1,12 +1,12 @@
-import os
 import mimetypes
+import os
+
 from dotenv import load_dotenv
+from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
-from google.oauth2 import service_account
 from werkzeug.utils import secure_filename
 
-# from webapp.lib.config import SERVICE_ACCOUNT_FILE, PARENT_FOLDER_ID
 load_dotenv()
 
 SERVICE_ACCOUNT_FILE = os.getenv("SERVICE_ACCOUNT_FILE")

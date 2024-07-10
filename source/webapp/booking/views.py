@@ -1,19 +1,13 @@
 import os
-from flask import Blueprint, flash, render_template, redirect, url_for, request
-from flask_login import current_user, login_required
-from werkzeug.utils import secure_filename
 
-from webapp.lib.db import db
+from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask_login import current_user, login_required
 from webapp.booking.forms import AddApartmensForm
-from webapp.pydrive.drive import upload_photo
+from webapp.lib.db import db
+from webapp.lib.models import Apartmens, ApartmensTypeChoice, Comfort, PaymensTypeChoice, Propertie
 from webapp.pydrive.custom_temp.create_custom_temp_dir import create_custom_temp_dir
-from webapp.lib.models import (
-    Apartmens,
-    ApartmensTypeChoice,
-    PaymensTypeChoice,
-    Comfort,
-    Propertie,
-)
+from webapp.pydrive.drive import upload_photo
+from werkzeug.utils import secure_filename
 
 blueprint = Blueprint("apartmens", __name__, url_prefix="/users")
 
@@ -48,9 +42,7 @@ def add_apartmens():
             # Создайте собственный временный каталог с помощью функции create_custom_temp_dir()
             custom_temp_dir = create_custom_temp_dir()
             # Временно сохраняем файл в пользовательском каталоге
-            temp_file_path = os.path.join(
-                custom_temp_dir, secure_filename(image_file.filename)
-            )
+            temp_file_path = os.path.join(custom_temp_dir, secure_filename(image_file.filename))
             image_file.save(temp_file_path)
             # Загружаем файл на Google Disk
             file = upload_photo(temp_file_path)

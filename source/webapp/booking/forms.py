@@ -1,15 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import (
-    BooleanField,
-    FileField,
-    TextAreaField,
-    SelectField,
-    StringField,
-    SubmitField,
-)
-from wtforms.validators import DataRequired
-
 from webapp.lib.models import ApartmensTypeChoice, PaymensTypeChoice
+from wtforms import BooleanField, FileField, SelectField, StringField, SubmitField, TextAreaField
+from wtforms.validators import DataRequired
 
 
 class AddApartmensForm(FlaskForm):
