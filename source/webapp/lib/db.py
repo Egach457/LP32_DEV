@@ -9,7 +9,8 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 load_dotenv()
 
-SQLALCHEMY_DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI")
+# BUG: возможно прийдется исправить type: str
+SQLALCHEMY_DATABASE_URI = str(os.getenv("SQLALCHEMY_DATABASE_URI"))
 
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
 db_session = scoped_session(sessionmaker(bind=engine))

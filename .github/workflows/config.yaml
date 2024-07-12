@@ -27,7 +27,7 @@ jobs:
       - name: Install requirements
         run: pip install -r requirements.txt
       - name: Types with mypy
-        run: mypy --ignore-missing-imports .
+        run: mypy --ignore-missing-imports --migrations .
 
   format:
     runs-on: ubuntu-latest
