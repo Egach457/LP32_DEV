@@ -6,11 +6,11 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Ruff
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: '3.11'
       - name: Install requirements
         run: pip install -r requirements.txt
       - name: Lint with ruff
@@ -19,11 +19,11 @@ jobs:
   types:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Mypy
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: '3.11'
       - name: Install requirements
         run: pip install -r requirements.txt
       - name: Types with mypy
@@ -32,11 +32,11 @@ jobs:
   format:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Black
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: '3.11'
       - name: Install requirements
         run: pip install -r requirements.txt
       - name: Format with black
@@ -45,11 +45,11 @@ jobs:
   import:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Isort
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: '3.11'
       - name: Install requirements
         run: pip install -r requirements.txt
       - name: Import with isort
