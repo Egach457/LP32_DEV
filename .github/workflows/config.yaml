@@ -1,0 +1,56 @@
+name: webapp
+
+on: [push]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Ruff
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.11.3
+      - name: Install requirements
+        run: pip install -r requirements.txt
+      - name: Lint with ruff
+        run: ruff check .
+
+  types:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Mypy
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.11.3
+      - name: Install requirements
+        run: pip install -r requirements.txt
+      - name: Types with mypy
+        run: mypy .
+
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Black
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.11.3
+      - name: Install requirements
+        run: pip install -r requirements.txt
+      - name: Format with black
+        run: black .
+
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Isort
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.11.3
+      - name: Install requirements
+        run: pip install -r requirements.txt
+      - name: Import with isort
+        run: isort .
