@@ -3,7 +3,8 @@ from getpass import getpass
 
 from webapp.app import create_app
 from webapp.lib.db import db
-from webapp.user.models import User
+from webapp.lib.models import User
+
 
 app = create_app()
 

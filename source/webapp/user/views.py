@@ -4,6 +4,7 @@ from webapp.lib.db import db
 from webapp.lib.models import User
 from webapp.user.forms import LoginForm, RegistrationForm
 
+
 blueprint = Blueprint("user", __name__, url_prefix="/users")
 
 

@@ -5,7 +5,6 @@ __pycache__/
 config.py
 client_secrets.json
 daily_rent_key.json
-.*
 
 # C extensions
 *.so
@@ -140,6 +139,8 @@ venv.bak/
 
 # mkdocs documentation
 /site
+
+.ruff_cache/
 
 # mypy
 .mypy_cache/

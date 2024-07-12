@@ -7,6 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from webapp.lib.db import Base, db, engine
 from werkzeug.security import check_password_hash, generate_password_hash
 
+
 db.metadata.clear()
 
 
