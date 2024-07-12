@@ -9,6 +9,7 @@ from webapp.pydrive.custom_temp.create_custom_temp_dir import create_custom_temp
 from webapp.pydrive.drive import upload_photo
 from werkzeug.utils import secure_filename
 
+
 blueprint = Blueprint("apartmens", __name__, url_prefix="/users")
 
 

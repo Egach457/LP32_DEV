@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template
 from webapp.lib.models import Apartmens, Comfort, Propertie
 
+
 blueprint = Blueprint("card_details", __name__)
 
 

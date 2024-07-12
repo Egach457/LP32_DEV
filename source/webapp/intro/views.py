@@ -3,6 +3,7 @@ from sqlalchemy import func
 from webapp.lib.db import db_session
 from webapp.lib.models import Apartmens
 
+
 blueprint = Blueprint("intro", __name__)
 
 
