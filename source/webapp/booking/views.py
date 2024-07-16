@@ -8,6 +8,7 @@ from webapp.lib.models import Apartmens, ApartmensTypeChoice, Comfort, PaymensTy
 from webapp.pydrive.custom_temp.create_custom_temp_dir import create_custom_temp_dir
 from webapp.pydrive.drive import upload_photo
 from werkzeug.utils import secure_filename
+from werkzeug.wrappers import Response
 
 
 blueprint = Blueprint("apartmens", __name__, url_prefix="/users")
@@ -16,7 +17,7 @@ blueprint = Blueprint("apartmens", __name__, url_prefix="/users")
 # TODO: пускать пользователя к форме через проверку юзера
 @blueprint.route("/apartmens")
 @login_required
-def apartmens():
+def apartmens() -> str:
     title = "Создание объявления"
     form = AddApartmensForm()
     rent_options = [choice.value for choice in ApartmensTypeChoice]
@@ -31,22 +32,28 @@ def apartmens():
 
 
 @blueprint.route("add-apartmens", methods=["POST"])
-def add_apartmens():
+def add_apartmens() -> Response:
     form = AddApartmensForm()
     if form.validate_on_submit():
+
         # Получаем rent_type из формы
-        rent_type = form.rent_type.data
-        payment_type = form.payment_type.data
+        rent_type: str = form.rent_type.data
+        payment_type: str = form.payment_type.data
+
         # Получаем файл изображения
         image_file = request.files[form.image.name]
+
         if image_file:
+
             # Создайте собственный временный каталог с помощью функции create_custom_temp_dir()
-            custom_temp_dir = create_custom_temp_dir()
+            custom_temp_dir: str = create_custom_temp_dir()
+
             # Временно сохраняем файл в пользовательском каталоге
-            temp_file_path = os.path.join(custom_temp_dir, secure_filename(image_file.filename))
+            temp_file_path: str = os.path.join(custom_temp_dir, secure_filename(image_file.filename))
             image_file.save(temp_file_path)
+
             # Загружаем файл на Google Disk
-            file = upload_photo(temp_file_path)
+            file_id: str = upload_photo(temp_file_path)
         if rent_type not in [choice.value for choice in ApartmensTypeChoice]:
             flash("Выбран не верный тип аренды")
             return redirect(url_for("apartmens.apartmens"))
@@ -65,7 +72,7 @@ def add_apartmens():
                 description=form.description.data,
                 payment_type=payment_type,
                 rent_type=rent_type,
-                image_path=file,
+                image_path=file_id,
             )
             db.session.add(apartmens)
             db.session.commit()

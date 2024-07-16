@@ -87,14 +87,14 @@ class User(Base, UserMixin):
         uselist=True,
     )
 
-    def set_password(self, password):
+    def set_password(self, password: str) -> None:
         self.password = generate_password_hash(password)
 
-    def check_password(self, password):
+    def check_password(self, password: str) -> bool:
         return check_password_hash(self.password, password)
 
     @property
-    def is_admin(self):
+    def is_admin(self) -> bool:
         return self.role == "admin"
 
     def __repr__(self) -> str:
@@ -119,7 +119,7 @@ class Comfort(Base):
         uselist=False,
     )
 
-    def get_boolean_values(self):
+    def get_boolean_values(self) -> dict[str, str]:
         boolean_values = {
             "wi-fi": self.wi_fi,
             "hair_dryer": self.hair_dryer,

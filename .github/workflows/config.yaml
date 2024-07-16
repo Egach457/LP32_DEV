@@ -6,6 +6,8 @@ on:
   pull_request:
     branches: [main]
 
+    # TODO: нужно добавть валидацию https://github.com/marketplace/actions/html5-validator
+
 jobs:
   lint:
     runs-on: ubuntu-latest
