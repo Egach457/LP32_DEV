@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-danger" role="alert">
+          {{ message }}<br />
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+  <form action="{{ url_for('booking_list.edit_announcement', apartment_id=apartment.id) }}" method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <div class="form-group">{{ form.address.label }} {{ form.address() }}</div>
+    <div class="form-group">{{ form.title.label }} {{ form.title() }}</div>
+    <div class="form-group">{{ form.description.label }} {{ form.description() }}</div>
+    <br>
+    {{ form.submit }} {{ form.submit_back }}
+  </form>
+{% endblock %}

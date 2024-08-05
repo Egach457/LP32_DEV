@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
+from webapp.lib.db import db
+from webapp.lib.models import Apartmens
 from werkzeug.utils import secure_filename
 
 
@@ -16,7 +18,7 @@ PARENT_FOLDER_ID = os.getenv("PARENT_FOLDER_ID")
 SCOPES = ["https://www.googleapis.com/auth/drive"]
 
 
-def authenticate():
+def authenticate() -> service_account.Credentials:
     creds = service_account.Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE,
         scopes=SCOPES,
@@ -24,7 +26,7 @@ def authenticate():
     return creds
 
 
-def upload_photo(file_path):
+def upload_photo(file_path: str) -> str:
     creds = authenticate()
     service = build("drive", "v3", credentials=creds)
 
@@ -45,7 +47,13 @@ def upload_photo(file_path):
     return file["id"]
 
 
-# file = upload_photo("collage.jpg")
-# print(file)
+def get_photo(apartmens_id: int) -> str | None:
+    apartment = db.session.query(Apartmens).filter_by(id=apartmens_id).first()
+    if apartment and apartment.image_path:
+        creds = authenticate()
+        service = build("drive", "v3", credentials=creds)
+        file = service.files().get(fileId=apartment.image_path, fields="webViewLink").execute()
+        web_view_link = file.get("webViewLink")
+        return web_view_link
 
-# upload_photo("collage.jpg")
+    return None

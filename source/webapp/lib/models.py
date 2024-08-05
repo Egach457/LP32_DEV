@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Optional
+from typing import Any, Optional
 
 from flask_login import UserMixin
 from sqlalchemy import Boolean, DateTime, ForeignKey, String, Text
@@ -21,8 +21,6 @@ class ApartmensTypeChoice(Enum):
 class PaymensTypeChoice(Enum):
     CASH = "Наличные"
     CARD = "Карта"
-
-    # TODO: Добавить поле в Apartmens (стоимость аренды)
 
 
 class Apartmens(Base):
@@ -87,14 +85,14 @@ class User(Base, UserMixin):
         uselist=True,
     )
 
-    def set_password(self, password):
+    def set_password(self, password: str) -> None:
         self.password = generate_password_hash(password)
 
-    def check_password(self, password):
+    def check_password(self, password: str) -> bool:
         return check_password_hash(self.password, password)
 
     @property
-    def is_admin(self):
+    def is_admin(self) -> bool:
         return self.role == "admin"
 
     def __repr__(self) -> str:
@@ -119,7 +117,7 @@ class Comfort(Base):
         uselist=False,
     )
 
-    def get_boolean_values(self):
+    def get_boolean_values(self) -> dict[str, str]:
         boolean_values = {
             "wi-fi": self.wi_fi,
             "hair_dryer": self.hair_dryer,
@@ -134,7 +132,7 @@ class Comfort(Base):
             boolean_values[key] = "Да" if value else "Нет"
         return boolean_values
 
-    def to_dict(self):
+    def to_dict(self) -> dict[str, Any]:
         boolean_values = self.get_boolean_values()
         return {"id": self.id, "apartmens_id": self.apartmens_id, **boolean_values}
 
@@ -163,7 +161,7 @@ class Propertie(Base):
         uselist=False,
     )
 
-    def get_boolean_values(self):
+    def get_boolean_values(self) -> dict[str, str]:
         boolean_values = {
             "no_children": self.no_children,
             "no_parties": self.no_parties,
@@ -176,7 +174,7 @@ class Propertie(Base):
             boolean_values[key] = "Да" if value else "Нет"
         return boolean_values
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         boolean_values = self.get_boolean_values()
         return {
             "id": self.id,

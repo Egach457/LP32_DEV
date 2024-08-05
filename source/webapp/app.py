@@ -15,10 +15,9 @@ from webapp.lib.models import User
 from webapp.user.views import blueprint as user_blueprint
 
 
-def create_app():
+def create_app() -> Flask:
     app = Flask(__name__)
     load_dotenv()
-    # app.config.from_pyfile(CONFIG_APP)
     app.config.update(
         SECRET_KEY=os.environ.get("SECRET_KEY"),
         SQLALCHEMY_DATABASE_URI=os.environ.get("SQLALCHEMY_DATABASE_URI"),
@@ -40,7 +39,7 @@ def create_app():
     app.register_blueprint(booking_list)
 
     @login_manager.user_loader
-    def load_user(user_id):
+    def load_user(user_id: int) -> User:
         return User.query.get(user_id)
 
     return app

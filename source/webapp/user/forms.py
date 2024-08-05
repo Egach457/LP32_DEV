@@ -33,12 +33,12 @@ class RegistrationForm(FlaskForm):
     )
     submit = SubmitField("Send", render_kw={"class": "btn btn-primary"})
 
-    def validate_useraname(self, first_name, last_name):
+    def validate_useraname(self, first_name: StringField, last_name: StringField) -> None:
         user_count = User.query.filter_by(first_name=first_name.data, last_name=last_name.data).count()
         if user_count > 0:
             raise ValidationError("Такой пользователь зарегистрирован")
 
-    def validate_email(self, email):
+    def validate_email(self, email: StringField) -> None:
         user_count = User.query.filter_by(email=email.data).count()
         if user_count > 0:
             raise ValidationError("Пользовател с такой электронной почтой уже зарегистрирован")

@@ -63,7 +63,12 @@ class AddApartmensForm(FlaskForm):
         render_kw={"class": "form-control"},
     )
     room_area = StringField(
-        "Площадь аренды",
+        "Площадь аренды (м2)",
+        validators=[DataRequired()],
+        render_kw={"class": "form-control"},
+    )
+    price = StringField(
+        "Стоимость аренды (руб.)",
         validators=[DataRequired()],
         render_kw={"class": "form-control"},
     )
