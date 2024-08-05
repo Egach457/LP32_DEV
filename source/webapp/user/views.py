@@ -3,13 +3,14 @@ from flask_login import current_user, login_user, logout_user
 from webapp.lib.db import db
 from webapp.lib.models import User
 from webapp.user.forms import LoginForm, RegistrationForm
+from werkzeug.wrappers import Response
 
 
 blueprint = Blueprint("user", __name__, url_prefix="/users")
 
 
 @blueprint.route("/login")
-def login():
+def login() -> str | Response:
     if current_user.is_authenticated:
         return redirect(url_for("intro.index"))
 
@@ -20,13 +21,12 @@ def login():
 
 # Изменил redirect(intro.index)
 @blueprint.route("/process-login", methods=["POST"])
-def process_login():
+def process_login() -> str | Response:
     form = LoginForm()
     if form.validate_on_submit():
         email = User.query.filter(User.email == form.email.data).first()
         if email and email.check_password(form.password.data):
             login_user(email, remember=form.remember_me.data)
-            # BUG: нет оповещения о входе. Появляется на другой странице.
             flash("Вошли на сайт")
             return redirect(url_for("intro.index"))
 
@@ -35,15 +35,14 @@ def process_login():
 
 
 @blueprint.route("/logout")
-def logout():
+def logout() -> str | Response:
     logout_user()
-    # BUG: нет оповещения. Появляется на другой странице.
     flash("Вы успешно разлогинились")
     return redirect(url_for("intro.index"))
 
 
 @blueprint.route("/register")
-def register():
+def register() -> str | Response:
     if current_user.is_authenticated:
         return redirect(url_for("intro.index"))
     title = "Registration"
@@ -52,7 +51,7 @@ def register():
 
 
 @blueprint.route("/process-reg", methods=["POST"])
-def process_reg():
+def process_reg() -> str | Response:
     form = RegistrationForm()
     if form.validate_on_submit():
         new_user = User(

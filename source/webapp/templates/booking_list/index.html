@@ -1,9 +1,16 @@
 {% extends "base.html" %}
-
-
 {% block content %}
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-info" role="alert">
+          {{ message }}<br />
+        </div>
+      {% endfor %}
+    {% endif %}
+    {% endwith %}
 <br>
-<table class="table table-bordered table-striped">
+<table class="table table-striped">
   <thead>
     <tr>
       <th>Наименование объекта</th>
@@ -12,27 +19,18 @@
       <th>Инструменты</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="table-group-divider">
+    {% for apartment in apartmens %}
     <tr>
-      <td>Название объекта 1</td>
-      <td>Адрес объекта 1</td>
-      <td>Описание объекта 1</td>
-      <td>
-        <button type="button" class="btn btn-primary">Редактировать</button>
-        <button type="button" class="btn btn-danger">Удалить</button>
-        <button type="button" class="btn btn-success">Сохранить изменения</button>
-      </td>
+      <td>{{ apartment.title }}</td>
+      <td>{{ apartment.address }}</td>
+      <td>{{ apartment.description }}</td>
+        <td>
+          <a href="{{ url_for('booking_list.edit_announcement', apartment_id=apartment.id) }}" class="btn btn-dark">Редактировать</a>
+          <a href="{{ url_for('booking_list.delete_announcement', apartment_id=apartment.id) }}" class="btn btn-danger">Удалить</a>
+        </td>
     </tr>
-    <tr>
-      <td>Название объекта 2</td>
-      <td>Адрес объекта 2</td>
-      <td>Описание объекта 2</td>
-      <td>
-        <button type="button" class="btn btn-primary">Редактировать</button>
-        <button type="button" class="btn btn-danger">Удалить</button>
-        <button type="button" class="btn btn-success">Сохранить изменения</button>
-      </td>
-    </tr>
+    {% endfor %}
     <!-- Добавьте другие строки таблицы, если необходимо -->
   </tbody>
 </table>

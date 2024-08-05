@@ -39,6 +39,7 @@
     <div class="form-group">{{ form.number_of_beds.label }} {{ form.number_of_beds() }}</div>
     <div class="form-group">{{ form.number_of_guests.label }} {{ form.number_of_guests() }}</div>
     <div class="form-group">{{ form.room_area.label }} {{ form.room_area() }}</div>
+    <div class="form-group">{{ form.price.label }} {{ form.price() }}</div>
     <div class="form-check form-switch">
       <input class="form-check-input" type="checkbox" role="switch" id="{{ form.wi_fi.id }}" name="{{ form.wi_fi.name }}"{% if form.wi_fi.data %}checked{% endif %}>
       <label class="form-check-label" for="{{ form.wi_fi.id }}">{{ form.wi_fi.label }}</label>

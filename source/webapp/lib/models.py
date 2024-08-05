@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Optional
+from typing import Any, Optional
 
 from flask_login import UserMixin
 from sqlalchemy import Boolean, DateTime, ForeignKey, String, Text
@@ -21,8 +21,6 @@ class ApartmensTypeChoice(Enum):
 class PaymensTypeChoice(Enum):
     CASH = "Наличные"
     CARD = "Карта"
-
-    # TODO: Добавить поле в Apartmens (стоимость аренды)
 
 
 class Apartmens(Base):
@@ -134,7 +132,7 @@ class Comfort(Base):
             boolean_values[key] = "Да" if value else "Нет"
         return boolean_values
 
-    def to_dict(self):
+    def to_dict(self) -> dict[str, Any]:
         boolean_values = self.get_boolean_values()
         return {"id": self.id, "apartmens_id": self.apartmens_id, **boolean_values}
 
@@ -163,7 +161,7 @@ class Propertie(Base):
         uselist=False,
     )
 
-    def get_boolean_values(self):
+    def get_boolean_values(self) -> dict[str, str]:
         boolean_values = {
             "no_children": self.no_children,
             "no_parties": self.no_parties,
@@ -176,7 +174,7 @@ class Propertie(Base):
             boolean_values[key] = "Да" if value else "Нет"
         return boolean_values
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         boolean_values = self.get_boolean_values()
         return {
             "id": self.id,

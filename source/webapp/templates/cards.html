@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
+ {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-primary" role="alert">
+          {{ message }}<br />
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
 <br>
 <div class="container">
   <div class="row justify-content-center">
@@ -46,7 +55,7 @@
     {% for card in cards_list %}
     <div class="col-md-4 mx-2 mx-auto">
       <div class="card mt-4">
-        <img src="/static/img/home1.jpg" class="card-img-top" alt="...">
+        <img src="{{ card.image_path }}" class="img-fluid" alt="...">
         <div class="card-body">
           <h5 class="card-title">{{ card.title }}</h5>
           <h6 class="card-subtitle mb-2 text-muted">{{ card.country }}, {{ card.city }}, {{ card.address }}</h6>
