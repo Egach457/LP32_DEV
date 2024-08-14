@@ -42,6 +42,7 @@ def logout() -> str | Response:
 
 
 @blueprint.route("/register")
+# BUG: когда форма заполнена нет возможности перейти в регистрацию.
 def register() -> str | Response:
     if current_user.is_authenticated:
         return redirect(url_for("intro.index"))

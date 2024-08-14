@@ -1,65 +1,70 @@
 {% extends "base.html" %}
 {% block content %}
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      {% for message in messages %}
-        <div class="alert alert-info" role="alert">
-          {{ message }}<br />
-        </div>
-      {% endfor %}
-    {% endif %}
+    {% with messages =
+        get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-info" role="alert">
+                    {{ message }}
+                    <br />
+                </div>
+            {% endfor %}
+        {% endif %}
     {% endwith %}
-<br>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Наименование объекта</th>
-      <th>Адрес объекта</th>
-      <th>Описание объекта</th>
-      <th>Инструменты</th>
-    </tr>
-  </thead>
-  <tbody class="table-group-divider">
-    {% for apartment in apartmens %}
-    <tr>
-      <td>{{ apartment.title }}</td>
-      <td>{{ apartment.address }}</td>
-      <td>{{ apartment.description }}</td>
-        <td>
-          <a href="{{ url_for('booking_list.edit_announcement', apartment_id=apartment.id) }}" class="btn btn-dark">Редактировать</a>
-          <a href="{{ url_for('booking_list.delete_announcement', apartment_id=apartment.id) }}" class="btn btn-danger">Удалить</a>
-        </td>
-    </tr>
-    {% endfor %}
-    <!-- Добавьте другие строки таблицы, если необходимо -->
-  </tbody>
-</table>
-<br>
-<br>
-<br>
-<br>
-<br><br>
-<br>
-<br>
-<br>
-<br>
-<br><br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-
-
+    <br />
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Наименование объекта</th>
+                <th>Адрес объекта</th>
+                <th>Описание объекта</th>
+                <th>Инструменты</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            {% for apartment in apartmens %}
+                <tr>
+                    <td>{{ apartment.title }}</td>
+                    <td>{{ apartment.address }}</td>
+                    <td>{{ apartment.description }}</td>
+                    <td>
+                        <a href="{{ url_for('booking_list.edit_announcement', apartment_id=apartment.id) }}"
+                           class="btn btn-dark">Редактировать</a>
+                        <form action="{{ url_for('booking_list.delete_announcement', apartment_id=apartment.id) }}"
+                              class="d-inline"
+                              method="POST">
+                        </a>
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                    </td>
+                </tr>
+            {% endfor %}
+            <!-- Добавьте другие строки таблицы, если необходимо -->
+        </tbody>
+    </table>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
 {% endblock %}
