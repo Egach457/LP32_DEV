@@ -1,9 +1,10 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from webapp.booking_list.forms import EditApartmentForm
-from webapp.booking_list.models import DeleteAnnouncement, EditAnnouncement, UserShowAnnouncement
+from webapp.booking_list.models import DeleteAnnouncement, EditAnnouncement
 from webapp.lib.db import db
 from webapp.lib.models import Apartmens
+from webapp.user.models import UserShowAnnouncement
 from werkzeug.wrappers import Response
 
 
@@ -67,4 +68,5 @@ def delete_announcement(apartment_id: int) -> str | Response:
         flash(f"Возникла ошибка: {err}")
         return redirect(url_for("booking_list.my_booking_list"))
 
+    flash("Объявление успешно удалено")
     return redirect(url_for("booking_list.my_booking_list"))

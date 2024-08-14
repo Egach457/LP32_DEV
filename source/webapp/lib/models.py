@@ -39,22 +39,27 @@ class Apartmens(Base):
     accommodations_bunch: Mapped["Accommodation"] = relationship(
         back_populates="apartmens_bunch",
         uselist=False,
+        cascade="all, delete",
     )
     comforts_bunch: Mapped[list["Comfort"]] = relationship(
         back_populates="apartmens_bunch",
         uselist=True,
+        cascade="all, delete",
     )
     payments_bunch: Mapped["Payment"] = relationship(
         back_populates="apartmens_bunch",
         uselist=False,
+        cascade="all, delete",
     )
     properties_bunch: Mapped[list["Propertie"]] = relationship(
         back_populates="apartmens_bunch",
         uselist=True,
+        cascade="all, delete",
     )
     comment_bunch: Mapped[list["Comment"]] = relationship(
         back_populates="apartmens_bunch",
         uselist=True,
+        cascade="all, delete",
     )
     user_bunch: Mapped["User"] = relationship(
         back_populates="apartmens_bunch",
@@ -83,6 +88,7 @@ class User(Base, UserMixin):
     comment_bunch: Mapped[list["Comment"]] = relationship(
         back_populates="user_bunch",
         uselist=True,
+        cascade="all, delete",
     )
 
     def set_password(self, password: str) -> None:
@@ -115,6 +121,7 @@ class Comfort(Base):
     apartmens_bunch: Mapped["Apartmens"] = relationship(
         back_populates="comforts_bunch",
         uselist=False,
+        cascade="all, delete",
     )
 
     def get_boolean_values(self) -> dict[str, str]:
@@ -159,6 +166,7 @@ class Propertie(Base):
     apartmens_bunch: Mapped["Apartmens"] = relationship(
         back_populates="properties_bunch",
         uselist=False,
+        cascade="all, delete",
     )
 
     def get_boolean_values(self) -> dict[str, str]:
@@ -202,6 +210,7 @@ class Payment(Base):
     apartmens_bunch: Mapped["Apartmens"] = relationship(
         back_populates="payments_bunch",
         uselist=False,
+        cascade="all, delete",
     )
 
     def __repr__(self) -> str:
@@ -220,6 +229,7 @@ class Accommodation(Base):
     apartmens_bunch: Mapped["Apartmens"] = relationship(
         back_populates="accommodations_bunch",
         uselist=False,
+        cascade="all, delete",
     )
 
     def __repr__(self) -> str:
@@ -240,11 +250,13 @@ class Comment(Base):
         back_populates="comment_bunch",
         foreign_keys=[apartmens_id],
         uselist=False,
+        cascade="all, delete",
     )
     user_bunch: Mapped["User"] = relationship(
         back_populates="comment_bunch",
         foreign_keys=[user_id],
         uselist=False,
+        cascade="all, delete",
     )
 
     def __repr__(self) -> str:

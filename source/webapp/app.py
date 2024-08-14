@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 from dotenv import load_dotenv
 from flask import Flask
@@ -22,6 +23,7 @@ def create_app() -> Flask:
         SECRET_KEY=os.environ.get("SECRET_KEY"),
         SQLALCHEMY_DATABASE_URI=os.environ.get("SQLALCHEMY_DATABASE_URI"),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
+        PERMANENT_SESSION_LIFETIME=timedelta(days=5),
     )
     db.init_app(app)
     Migrate(app, db)
